@@ -1,0 +1,33 @@
+25-11-09.02:07:14.176 [main            ] INFO  Application            - Starting Application using Java 1.8.0_462 on Pluto with PID 47898 (/home/pluto/Project/BigMarket/BigMarket-app/target/classes started by pluto in /home/pluto/Project/BigMarket)
+25-11-09.02:07:14.178 [main            ] INFO  Application            - The following 1 profile is active: "dev"
+25-11-09.02:07:14.912 [main            ] INFO  TomcatWebServer        - Tomcat initialized with port(s): 8091 (http)
+25-11-09.02:07:14.917 [main            ] INFO  Http11NioProtocol      - Initializing ProtocolHandler ["http-nio-8091"]
+25-11-09.02:07:14.917 [main            ] INFO  StandardService        - Starting service [Tomcat]
+25-11-09.02:07:14.917 [main            ] INFO  StandardEngine         - Starting Servlet engine: [Apache Tomcat/9.0.75]
+25-11-09.02:07:14.969 [main            ] INFO  [/]                    - Initializing Spring embedded WebApplicationContext
+25-11-09.02:07:14.969 [main            ] INFO  ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 743 ms
+25-11-09.02:07:15.475 [main            ] INFO  Http11NioProtocol      - Starting ProtocolHandler ["http-nio-8091"]
+25-11-09.02:07:15.487 [main            ] INFO  TomcatWebServer        - Tomcat started on port(s): 8091 (http) with context path ''
+25-11-09.02:07:15.495 [main            ] INFO  Application            - Started Application in 1.744 seconds (JVM running for 2.489)
+25-11-09.02:16:11.563 [main            ] INFO  Application            - Starting Application using Java 1.8.0_462 on Pluto with PID 49694 (/home/pluto/Project/BigMarket/BigMarket-app/target/classes started by pluto in /home/pluto/Project/BigMarket)
+25-11-09.02:16:11.565 [main            ] INFO  Application            - The following 1 profile is active: "dev"
+25-11-09.02:16:12.231 [main            ] INFO  TomcatWebServer        - Tomcat initialized with port(s): 8091 (http)
+25-11-09.02:16:12.235 [main            ] INFO  Http11NioProtocol      - Initializing ProtocolHandler ["http-nio-8091"]
+25-11-09.02:16:12.236 [main            ] INFO  StandardService        - Starting service [Tomcat]
+25-11-09.02:16:12.236 [main            ] INFO  StandardEngine         - Starting Servlet engine: [Apache Tomcat/9.0.75]
+25-11-09.02:16:12.288 [main            ] INFO  [/]                    - Initializing Spring embedded WebApplicationContext
+25-11-09.02:16:12.288 [main            ] INFO  ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 680 ms
+25-11-09.02:16:12.743 [main            ] INFO  Http11NioProtocol      - Starting ProtocolHandler ["http-nio-8091"]
+25-11-09.02:16:12.752 [main            ] INFO  TomcatWebServer        - Tomcat started on port(s): 8091 (http) with context path ''
+25-11-09.02:16:12.759 [main            ] INFO  Application            - Started Application in 1.543 seconds (JVM running for 1.984)
+25-11-09.19:52:06.112 [main            ] INFO  Application            - Starting Application using Java 1.8.0_462 on Pluto with PID 1473 (/home/pluto/Project/BigMarket/BigMarket-app/target/classes started by pluto in /home/pluto/Project/BigMarket)
+25-11-09.19:52:06.114 [main            ] INFO  Application            - The following 1 profile is active: "dev"
+25-11-09.19:52:06.789 [main            ] INFO  TomcatWebServer        - Tomcat initialized with port(s): 8091 (http)
+25-11-09.19:52:06.795 [main            ] INFO  Http11NioProtocol      - Initializing ProtocolHandler ["http-nio-8091"]
+25-11-09.19:52:06.796 [main            ] INFO  StandardService        - Starting service [Tomcat]
+25-11-09.19:52:06.796 [main            ] INFO  StandardEngine         - Starting Servlet engine: [Apache Tomcat/9.0.75]
+25-11-09.19:52:06.853 [main            ] INFO  [/]                    - Initializing Spring embedded WebApplicationContext
+25-11-09.19:52:06.854 [main            ] INFO  ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 712 ms
+25-11-09.19:52:07.392 [main            ] INFO  Http11NioProtocol      - Starting ProtocolHandler ["http-nio-8091"]
+25-11-09.19:52:07.403 [main            ] INFO  TomcatWebServer        - Tomcat started on port(s): 8091 (http) with context path ''
+25-11-09.19:52:07.410 [main            ] INFO  Application            - Started Application in 1.689 seconds (JVM running for 2.405)

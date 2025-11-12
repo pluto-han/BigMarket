@@ -7,7 +7,5 @@ package org.example.domain.strategy.service.armory;
  * @create: 11/11/25 1:43 PM
  **/
 public interface IStrategyArmory {
-    void assembleLotteryStrategy(Long strategyId);
-
-    Integer getRandomAwardId(Long strategyId);
+    boolean assembleLotteryStrategy(Long strategyId);
 }
