@@ -9,5 +9,5 @@ package org.example.domain.strategy.service.armory;
 public interface IStrategyDispatch {
     Integer getRandomAwardId(Long strategyId);
 
-    Integer getRndomAwardId(Long strategyId, String ruleWeightValue);
+    Integer getRandomAwardId(Long strategyId, String ruleWeightValue);
 }

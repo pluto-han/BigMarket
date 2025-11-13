@@ -69,9 +69,9 @@ public class StrategyArmoryAndDispatchTest {
 
     @Test
     public void test_getAssembleRandomVal_ruleWeightValue(){
-        log.info("测试结果：{} - 60 策略配置", strategyArmoryAndDispatch.getRndomAwardId(100001L, "60:102,103,104,105"));
-        log.info("测试结果：{} - 200 策略配置", strategyArmoryAndDispatch.getRndomAwardId(100001L, "200:106,107"));
-        log.info("测试结果：{} - 1000 策略配置", strategyArmoryAndDispatch.getRndomAwardId(100001L, "1000:105"));
+        log.info("测试结果：{} - 60 策略配置", strategyArmoryAndDispatch.getRandomAwardId(100001L, "60:102,103,104,105"));
+        log.info("测试结果：{} - 200 策略配置", strategyArmoryAndDispatch.getRandomAwardId(100001L, "200:106,107"));
+        log.info("测试结果：{} - 1000 策略配置", strategyArmoryAndDispatch.getRandomAwardId(100001L, "1000:105"));
 
     }
 }

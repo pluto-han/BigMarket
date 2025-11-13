@@ -54,7 +54,7 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
                 // 权重根据返回的信息进行抽奖
                 RuleActionEntity.RaffleBeforeEntity raffleBeforeEntity = ruleActionEntity.getData();
                 String ruleWeightValueKey = raffleBeforeEntity.getRuleWeightValueKey();
-                Integer awardId = strategyDispatch.getRndomAwardId(strategyId, ruleWeightValueKey);
+                Integer awardId = strategyDispatch.getRandomAwardId(strategyId, ruleWeightValueKey);
                 return RaffleAwardEntity.builder()
                         .awardId(awardId)
                         .build();
