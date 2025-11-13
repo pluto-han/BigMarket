@@ -6,7 +6,7 @@ import org.example.domain.strategy.model.entity.RaffleAwardEntity;
 import org.example.domain.strategy.model.entity.RaffleFactorEntity;
 import org.example.domain.strategy.service.IRaffleStrategy;
 import org.example.domain.strategy.service.armory.StrategyArmoryAndDispatch;
-import org.example.domain.strategy.service.rule.impl.RuleWeightLogicFilter;
+import org.example.domain.strategy.service.rule.chain.impl.RuleWeightLogicChain;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +27,7 @@ import javax.annotation.Resource;
 @SpringBootTest
 public class StrategyArmoryAndDispatchTest {
     @Resource
-    private RuleWeightLogicFilter ruleWeightLogicFilter;
+    private RuleWeightLogicChain ruleWeightLogicChain;
 
     @Resource
     private IRaffleStrategy raffleStrategy;
@@ -37,7 +37,7 @@ public class StrategyArmoryAndDispatchTest {
 
     @Before
     public void setUp() {
-        ReflectionTestUtils.setField(ruleWeightLogicFilter, "userScore", 4500L);
+        ReflectionTestUtils.setField(ruleWeightLogicChain, "userScore", 4500L);
     }
 
     @Test
