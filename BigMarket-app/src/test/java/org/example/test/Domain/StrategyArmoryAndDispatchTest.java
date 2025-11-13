@@ -37,7 +37,7 @@ public class StrategyArmoryAndDispatchTest {
 
     @Before
     public void setUp() {
-        ReflectionTestUtils.setField(ruleWeightLogicFilter, "userScore", 40500L);
+        ReflectionTestUtils.setField(ruleWeightLogicFilter, "userScore", 4500L);
     }
 
     @Test

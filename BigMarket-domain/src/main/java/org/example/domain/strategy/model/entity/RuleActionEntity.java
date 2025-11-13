@@ -36,4 +36,8 @@ public class RuleActionEntity<T extends RuleActionEntity.RaffleEntity> {
         /** award id */
         private Integer awardId;
     }
+
+    static public class RaffleCenterEntity extends RaffleEntity {
+
+    }
 }

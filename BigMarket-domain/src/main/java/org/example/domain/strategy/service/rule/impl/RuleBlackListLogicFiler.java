@@ -35,7 +35,7 @@ public class RuleBlackListLogicFiler implements ILogicFilter<RuleActionEntity.Ra
         String[] splitRuleValue = ruleValue.split(Constants.COLON);
         Integer awardId = Integer.parseInt(splitRuleValue[0]);
 
-        // 100:user001,user002,user003
+        // 101:user001,user002,user003
         // 过滤其他规则
         String[] userBlackIds = splitRuleValue[1].split(Constants.SPLIT);
         for (String userBlackId : userBlackIds) {
