@@ -1,5 +1,7 @@
 package org.example.domain.strategy.service.rule.chain;
 
+import org.example.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
+
 /**
  * @program: BigMarket
  * @description:
@@ -14,5 +16,5 @@ public interface ILogicChain extends ILogicChainArmory{
      * @param strategyId
      * @return
      */
-    Integer logic(String userId, Long strategyId);
+    DefaultChainFactory.StrategyAwardVO logic(String userId, Long strategyId);
 }

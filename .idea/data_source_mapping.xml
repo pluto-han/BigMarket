@@ -3,6 +3,9 @@
   <component name="DataSourcePerFileMappings">
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/fe8b9a50-fdd5-4de9-8811-cbf2565304aa/console.sql" value="fe8b9a50-fdd5-4de9-8811-cbf2565304aa" />
     <file url="file://$PROJECT_DIR$/BigMarket-app/src/main/resources/mybatis/mapper/award_mapper.xml" value="fe8b9a50-fdd5-4de9-8811-cbf2565304aa" />
+    <file url="file://$PROJECT_DIR$/BigMarket-app/src/main/resources/mybatis/mapper/rule_tree_mapper.xml" value="fe8b9a50-fdd5-4de9-8811-cbf2565304aa" />
+    <file url="file://$PROJECT_DIR$/BigMarket-app/src/main/resources/mybatis/mapper/rule_tree_node_line_mapper.xml" value="fe8b9a50-fdd5-4de9-8811-cbf2565304aa" />
+    <file url="file://$PROJECT_DIR$/BigMarket-app/src/main/resources/mybatis/mapper/rule_tree_node_mapper.xml" value="fe8b9a50-fdd5-4de9-8811-cbf2565304aa" />
     <file url="file://$PROJECT_DIR$/BigMarket-app/src/main/resources/mybatis/mapper/strategy_award_mapper.xml" value="fe8b9a50-fdd5-4de9-8811-cbf2565304aa" />
     <file url="file://$PROJECT_DIR$/BigMarket-app/src/main/resources/mybatis/mapper/strategy_mapper.xml" value="fe8b9a50-fdd5-4de9-8811-cbf2565304aa" />
     <file url="file://$PROJECT_DIR$/docs/dev-ops/environment/mysql/sql/big_market.sql" value="fe8b9a50-fdd5-4de9-8811-cbf2565304aa" />
