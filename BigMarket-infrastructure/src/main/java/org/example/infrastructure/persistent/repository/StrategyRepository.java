@@ -45,10 +45,15 @@ public class StrategyRepository implements IStrategyRepository {
     @Resource
     private IRuleTreeNodeLineDao ruleTreeNodeLineDao;
 
-
+    /**
+     * return Award List under given strategy
+     * @param strategyId
+     * @return List<StrategyAwardEntity>
+     */
     @Override
     public List<StrategyAwardEntity> queryStrategyAwardList(Long strategyId) {
-        String cacheKey = Constants.RedisKey.STRATEGY_AWARD_KEY + strategyId;
+        // First, acquire award list from Redis
+        String cacheKey = Constants.RedisKey.STRATEGY_AWARD_LIST_KEY + strategyId;
         List<StrategyAwardEntity> strategyAwardEntities = redisService.getValue(cacheKey);
 
         // if redis cache hit, then return directly
@@ -58,6 +63,7 @@ public class StrategyRepository implements IStrategyRepository {
 
         // redis cache not hit, query DB
         List<StrategyAward> strategyAwards = strategyAwardDao.queryStrategyAwardListByStrategyId(strategyId);
+        // StrategyAward is PO, should be changed to Entity
         strategyAwardEntities = new ArrayList<>(strategyAwards.size());
         for (StrategyAward strategyAward : strategyAwards) {
             StrategyAwardEntity strategyAwardEntity = StrategyAwardEntity.builder()
@@ -71,13 +77,23 @@ public class StrategyRepository implements IStrategyRepository {
             strategyAwardEntities.add(strategyAwardEntity);
         }
 
+        // set value to Redis
         redisService.setValue(cacheKey, strategyAwardEntities);
+
+
         return strategyAwardEntities;
     }
 
+    /**
+     * N.B. rateRange should also be stored, for the future implementation of microservice
+     * store StrategyAwardSearchRateTables into Redis
+     * @param key
+     * @param rateRange
+     * @param strategyAwardSearchRateTable
+     */
     @Override
     public void storeStrategyAwardSearchRateTables(String key, Integer rateRange, Map<Integer, Integer> strategyAwardSearchRateTable) {
-        // 1. 存储抽奖策略范围值，如10000，用于生成1000以内的随机数
+        // 1. 存储抽奖策略范围值，如10000，用于生成10000以内的随机数
         redisService.setValue(Constants.RedisKey.STRATEGY_RATE_RANGE_KEY + key, rateRange);
         // 2. 存储概率查找表
         Map<Integer, Integer> cacheRateTable = redisService.getMap(Constants.RedisKey.STRATEGY_RATE_TABLE_KEY + key);

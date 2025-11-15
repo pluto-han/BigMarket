@@ -56,13 +56,14 @@ public class StrategyArmoryAndDispatchTest {
 
     @Before
     public void test_strategyArmory(){
-        boolean success = strategyArmoryAndDispatch.assembleLotteryStrategy(100001L);
+//        boolean success = strategyArmoryAndDispatch.assembleLotteryStrategy(100001L);
+        boolean success = strategyArmoryAndDispatch.assembleLotteryStrategy(100005L);
         log.info("Test Result: {}", success);
     }
 
     @Test
     public void test_getAssembleRandomVal(){
-        log.info("测试结果：{} - 奖品id值", strategyArmoryAndDispatch.getRandomAwardId(100001L));
+        log.info("测试结果：{} - 奖品id值", strategyArmoryAndDispatch.getRandomAwardId(100005L));
 //        log.info("测试结果：{} - 奖品id值", strategyArmoryAndDispatch.getRandomAwardId(100002L));
 //        log.info("测试结果：{} - 奖品id值", strategyArmoryAndDispatch.getRandomAwardId(100002L));
     }

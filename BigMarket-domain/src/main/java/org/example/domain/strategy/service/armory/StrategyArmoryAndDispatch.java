@@ -27,99 +27,19 @@ import static org.example.types.enums.ResponseCode.STRATEGY_RULE_WEIGHT_IS_NULL;
 @Service
 @Slf4j
 public class StrategyArmoryAndDispatch implements IStrategyArmory, IStrategyDispatch {
- /*   @Resource
-    private IStrategyRepository strategyRepository;
-
-    @Override
-    public boolean assembleLotteryStrategy(Long strategyId) {
-        // 1. query strategy configuration
-        List<StrategyAwardEntity> strategyAwardEntities = strategyRepository.queryStrategyAwardList(strategyId);
-        assembleLotteryStrategy(String.valueOf(strategyId), strategyAwardEntities);
-
-        // 2. Strategy Weight Assemble -- apply to rule weight
-        StrategyEntity strategyEntity = strategyRepository.queryStrategyEntityByStrategyId(strategyId);
-
-        String ruleWeight = strategyEntity.getRuleWeight();
-        if (null == ruleWeight) {
-            return true;
-        }
-
-        StrategyRuleEntity strategyRuleEntity = strategyRepository.queryStrategyRule(strategyId, ruleWeight);
-        if(null == strategyRuleEntity){
-            throw new AppException(STRATEGY_RULE_WEIGHT_IS_NULL.getCode(), STRATEGY_RULE_WEIGHT_IS_NULL.getInfo());
-        }
-        Map<String, List<Integer>> ruleWeightValueMap = strategyRuleEntity.getRuleWeightValues();
-        Set<String> keys = ruleWeightValueMap.keySet();
-        for (String key : keys) {
-            List<Integer> ruleWeightValues = ruleWeightValueMap.get(key);
-            ArrayList<StrategyAwardEntity> strategyAwardEntitiesClone = new ArrayList<>(strategyAwardEntities);
-            strategyAwardEntitiesClone.removeIf(entity -> !ruleWeightValues.contains(entity.getAwardId()));
-            assembleLotteryStrategy(String.valueOf(strategyId).concat("_").concat(key), strategyAwardEntitiesClone);
-        }
-
-        return true;
-    }
-
-    private void assembleLotteryStrategy(String key, List<StrategyAwardEntity> strategyAwardEntities) {
-        // 1. get the minimum awardRate
-        BigDecimal minAwardRate = strategyAwardEntities.stream()
-                .map(StrategyAwardEntity::getAwardRate)
-                .min(BigDecimal::compareTo)
-                .orElse(BigDecimal.ZERO);
-
-        // 2. get the total value of all awardRate
-        BigDecimal totalAwardRate = strategyAwardEntities.stream()
-                .map(StrategyAwardEntity::getAwardRate)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-
-        // 3. use 1 / 0.0001 to get the probability range (percentile, thousandths or ten-thousandths)
-        BigDecimal rateRange = totalAwardRate.divide(minAwardRate, 0, RoundingMode.CEILING);
-
-        // 4. generate searchTable
-        ArrayList<Integer> strategyAwardSearchTables = new ArrayList<>(rateRange.intValue());
-        for (StrategyAwardEntity strategyAwardEntity : strategyAwardEntities) {
-            Integer awardId =  strategyAwardEntity.getAwardId();
-            BigDecimal awardRate = strategyAwardEntity.getAwardRate();
-
-            // calculate how many units in searchTable that every awardRate needs
-            for (int i = 0; i < rateRange.multiply(awardRate).setScale(0, RoundingMode.CEILING).intValue(); i++) {
-                strategyAwardSearchTables.add(awardId);
-            }
-        }
-
-        // 5. shuffle search table
-        Collections.shuffle(strategyAwardSearchTables);
-
-        // 6. transform into collection
-        HashMap<Integer, Integer> shuffledStrategyAwardRateTable = new HashMap<>();
-        for (int i = 0; i < strategyAwardSearchTables.size(); i++) {
-            shuffledStrategyAwardRateTable.put(i, strategyAwardSearchTables.get(i));
-        }
-
-        // 7. restore in redis
-        strategyRepository.storeStrategyAwardSearchRateTables(key, rateRange, shuffledStrategyAwardRateTable);
-    }
-
-    @Override
-    public Integer getRandomAwardId(Long strategyId) {
-        int rateRange = strategyRepository.getRateRange(strategyId);
-        return strategyRepository.getStrategyAwardAssemble(String.valueOf(strategyId), new SecureRandom().nextInt(rateRange));
-    }
-
-    @Override
-    public Integer getRandomAwardId(Long strategyId, String ruleWeightValue) {
-        String key = String.valueOf(strategyId).concat("_").concat(ruleWeightValue);
-        int rateRange = strategyRepository.getRateRange(key);
-        return strategyRepository.getStrategyAwardAssemble(key, new SecureRandom().nextInt(rateRange));
-    }*/
-
     @Resource
     private IStrategyRepository repository;
 
+    /**
+     * assemble strategy
+     * @param strategyId
+     * @return boolean
+     */
     @Override
     public boolean assembleLotteryStrategy(Long strategyId) {
-        // 1. 查询策略配置
+        // 1. 查询策略配置（也就是查询策略下的所有奖品）
         List<StrategyAwardEntity> strategyAwardEntities = repository.queryStrategyAwardList(strategyId);
+        // 1.1 组装策略
         assembleLotteryStrategy(String.valueOf(strategyId), strategyAwardEntities);
 
         // 2. 权重策略配置 - 适用于 rule_weight 权重规则配置
@@ -143,43 +63,71 @@ public class StrategyArmoryAndDispatch implements IStrategyArmory, IStrategyDisp
         return true;
     }
 
+    /**
+     * core idea of assembling strategy: Trading space for time:
+     * Probability values are represented by "slots". For example, if A has a prob of 60%, B has 30%, C has 10%. Total prob is 100%
+     * Then, A occupies 60 slots, with each slot returning A, and so on.
+     * @param key
+     * @param strategyAwardEntities
+     */
+    /*
+        N.B. The total probability is not always 1, this is acceptable.
+
+        calculate steps:
+        1. Find the minimum probability value (i.e. 0.1, 0.02, 0.003, the minimum probability value is 0.003)
+        2. Based on the minimum value found in step 1, which is 0.03, the integer values for percentages and per mille
+        can be calculated. In this case, it is 1000. (1 / 0.001 = 1000)
+        3. According to [slots = probability * 1000], each probability has 100, 20 and 3 slots, respectively.
+        In total, there are 123 slots.
+        4. We use [0, 123] as the range of random value. (i.e. There are 100 awards that has probability value of 0.1,
+        20 awards that has probability value of 0.02, 3 awards that has probability value of 0.003.)
+     */
     private void assembleLotteryStrategy(String key, List<StrategyAwardEntity> strategyAwardEntities) {
-        // 1. 获取最小概率值
+        // 1. Get the minimum probability value
         BigDecimal minAwardRate = strategyAwardEntities.stream()
                 .map(StrategyAwardEntity::getAwardRate)
                 .min(BigDecimal::compareTo)
                 .orElse(BigDecimal.ZERO);
 
-        // 2. 获取概率值总和
-        BigDecimal totalAwardRate = strategyAwardEntities.stream()
-                .map(StrategyAwardEntity::getAwardRate)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        // 2. Find the probability range value using iterative calculations
+        BigDecimal rateRange = BigDecimal.valueOf(convert(minAwardRate.doubleValue()));
 
-        // 3. 用 1 % 0.0001 获得概率范围，百分位、千分位、万分位
-        BigDecimal rateRange = totalAwardRate.divide(minAwardRate, 0, RoundingMode.CEILING);
-
-        // 4. 生成策略奖品概率查找表「这里指需要在list集合中，存放上对应的奖品占位即可，占位越多等于概率越高」
+        // 3. Generate StrategyAwardSearchRateTable
         List<Integer> strategyAwardSearchRateTables = new ArrayList<>(rateRange.intValue());
         for (StrategyAwardEntity strategyAward : strategyAwardEntities) {
             Integer awardId = strategyAward.getAwardId();
             BigDecimal awardRate = strategyAward.getAwardRate();
-            // 计算出每个概率值需要存放到查找表的数量，循环填充
-            for (int i = 0; i < rateRange.multiply(awardRate).setScale(0, RoundingMode.CEILING).intValue(); i++) {
+            // calculate how many slots that per probability value need, fill in cyclically
+            for (int i = 0; i < rateRange.multiply(awardRate).intValue(); i++) {
                 strategyAwardSearchRateTables.add(awardId);
             }
         }
 
-        // 5. 对存储的奖品进行乱序操作
+        // 4. shuffle the StrategyAwardSearchRateTable
         Collections.shuffle(strategyAwardSearchRateTables);
 
-        // 6. 生成出Map集合，key值，对应的就是后续的概率值。通过概率来获得对应的奖品ID
-        Map<Integer, Integer> shuffleStrategyAwardSearchRateTable = new LinkedHashMap<>();
+        // 5. Generate a map, where each key corresponds to a probability value. The awardId is then determined based on these probabilities.
+        Map<Integer, Integer> shuffledStrategyAwardSearchRateTable = new LinkedHashMap<>();
         for (int i = 0; i < strategyAwardSearchRateTables.size(); i++) {
-            shuffleStrategyAwardSearchRateTable.put(i, strategyAwardSearchRateTables.get(i));
+            shuffledStrategyAwardSearchRateTable.put(i, strategyAwardSearchRateTables.get(i));
         }
 
-        // 7. 存放到 Redis
-        repository.storeStrategyAwardSearchRateTables(key, shuffleStrategyAwardSearchRateTable.size(), shuffleStrategyAwardSearchRateTable);
+        // 6. store in Redis
+        repository.storeStrategyAwardSearchRateTables(key, shuffledStrategyAwardSearchRateTable.size(), shuffledStrategyAwardSearchRateTable);
+    }
+
+    /**
+     * Convert calculation only considers the decimal places.
+     * i.e. [0.01 returns 100], [0.009 returns 1000], and [0.0018 returns 10000].
+     */
+    private double convert(double min){
+        double current = min;
+        double max = 1;
+        while (current < 1){
+            current = current * 10;
+            max = max * 10;
+        }
+        return max;
     }
 
     @Override

@@ -18,9 +18,19 @@ import java.util.Map;
  * @create: 11/11/25 1:49 PM
  **/
 public interface IStrategyRepository {
-
+    /**
+     * return Award List under given strategy
+     * @param strategyId
+     * @return List<StrategyAwardEntity>
+     */
     List<StrategyAwardEntity> queryStrategyAwardList(Long strategyId);
 
+    /**
+     * store StrategyAwardSearchRateTables into Redis
+     * @param key
+     * @param rateRange
+     * @param strategyAwardSearchRateTable
+     */
     void storeStrategyAwardSearchRateTables(String key, Integer rateRange, Map<Integer, Integer> strategyAwardSearchRateTable);
 
     int getRateRange(Long strategyId);
