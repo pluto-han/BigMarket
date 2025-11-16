@@ -39,10 +39,18 @@ public class StrategyArmoryAndDispatch implements IStrategyArmory, IStrategyDisp
     public boolean assembleLotteryStrategy(Long strategyId) {
         // 1. 查询策略配置（也就是查询策略下的所有奖品）
         List<StrategyAwardEntity> strategyAwardEntities = repository.queryStrategyAwardList(strategyId);
-        // 1.1 组装策略
+
+        // 2. 缓存奖品库存
+        for (StrategyAwardEntity strategyAwardEntity : strategyAwardEntities) {
+            Integer awardId =  strategyAwardEntity.getAwardId();
+            Integer awardCount = strategyAwardEntity.getAwardCount();
+            cacheStrategyAwardCount(strategyId, awardId, awardCount);
+        }
+
+        // 3.1 默认装配配置 【全量抽奖概率】
         assembleLotteryStrategy(String.valueOf(strategyId), strategyAwardEntities);
 
-        // 2. 权重策略配置 - 适用于 rule_weight 权重规则配置
+        // 3.2 权重策略配置 - 适用于 rule_weight 权重规则配置
         StrategyEntity strategyEntity = repository.queryStrategyEntityByStrategyId(strategyId);
         String ruleWeight = strategyEntity.getRuleWeight();
         if (null == ruleWeight) return true;
@@ -147,4 +155,20 @@ public class StrategyArmoryAndDispatch implements IStrategyArmory, IStrategyDisp
         return repository.getStrategyAwardAssemble(key, new SecureRandom().nextInt(rateRange));
     }
 
+    /**
+     * 库存扣减
+     * @param strategyId
+     * @param awardId
+     * @return
+     */
+    @Override
+    public Boolean subtractionAwardStock(Long strategyId, Integer awardId) {
+        String cacheKey = Constants.RedisKey.STRATEGY_AWARD_COUNT_KEY + strategyId + Constants.UNDERLINE + awardId;
+        return repository.substractionAwardStock(cacheKey);
+    }
+
+    private void cacheStrategyAwardCount(Long strategyId, Integer awardId, Integer awardCount) {
+        String cacheKey = Constants.RedisKey.STRATEGY_AWARD_COUNT_KEY + strategyId + Constants.UNDERLINE + awardId;
+        repository.cacheStrategyAwardCount(cacheKey, awardCount);
+    }
 }

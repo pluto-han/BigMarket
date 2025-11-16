@@ -41,3 +41,4 @@ build/
 /package.json
 /package-lock.json
 /BigMarket-app/data/log/
+/.idea/
