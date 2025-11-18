@@ -10,6 +10,7 @@ import org.example.infrastructure.persistent.dao.*;
 import org.example.infrastructure.persistent.po.*;
 import org.example.infrastructure.persistent.redis.IRedisService;
 import org.example.types.common.Constants;
+import org.example.types.exception.AppException;
 import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RDelayedQueue;
 import org.springframework.stereotype.Repository;
@@ -19,6 +20,8 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+
+import static org.example.types.enums.ResponseCode.UN_ASSEMBLED_STRATEGY_ARMORY;
 
 /**
  * @program: BigMarket
@@ -74,9 +77,12 @@ public class StrategyRepository implements IStrategyRepository {
             StrategyAwardEntity strategyAwardEntity = StrategyAwardEntity.builder()
                         .strategyId(strategyAward.getStrategyId())
                         .awardId(strategyAward.getAwardId())
+                        .awardTitle(strategyAward.getAwardTitle())
+                        .awardSubtitle(strategyAward.getAwardSubtitle())
                         .awardCount(strategyAward.getAwardCount())
                         .awardCountSurplus(strategyAward.getAwardCountSurplus())
                         .awardRate(strategyAward.getAwardRate())
+                        .sort(strategyAward.getSort())
                         .build();
 
             strategyAwardEntities.add(strategyAwardEntity);
@@ -112,6 +118,10 @@ public class StrategyRepository implements IStrategyRepository {
 
     @Override
     public int getRateRange(String key) {
+        String cacheKey = Constants.RedisKey.STRATEGY_RATE_RANGE_KEY + key;
+        if (!redisService.isExists(cacheKey)) {
+            throw new AppException(UN_ASSEMBLED_STRATEGY_ARMORY.getCode(), cacheKey + Constants.COLON + UN_ASSEMBLED_STRATEGY_ARMORY.getInfo());
+        }
         return redisService.getValue(Constants.RedisKey.STRATEGY_RATE_RANGE_KEY + key);
     }
 
@@ -280,5 +290,35 @@ public class StrategyRepository implements IStrategyRepository {
         strategyAward.setStrategyId(strategyId);
         strategyAward.setAwardId(awardId);
         strategyAwardDao.updateStrategyAwardStock(strategyAward);
+    }
+
+    @Override
+    public StrategyAwardEntity queryStrategyAwardEntity(Long strategyId, Integer awardId) {
+        // redis cache
+        String cacheKey = Constants.RedisKey.STRATEGY_AWARD_KEY + strategyId + Constants.UNDERLINE + awardId;
+        StrategyAwardEntity strategyAwardEntity = redisService.getValue(cacheKey);
+        if (null != strategyAwardEntity) {
+            return strategyAwardEntity;
+        }
+
+        StrategyAward strategyAwardReq = new StrategyAward();
+        strategyAwardReq.setStrategyId(strategyId);
+        strategyAwardReq.setAwardId(awardId);
+        StrategyAward strategyAwardReqs = strategyAwardDao.queryStrategyAward(strategyAwardReq);
+
+        strategyAwardEntity = StrategyAwardEntity.builder()
+                .strategyId(strategyAwardReqs.getStrategyId())
+                .awardId(strategyAwardReqs.getAwardId())
+                .awardTitle(strategyAwardReqs.getAwardTitle())
+                .awardSubtitle(strategyAwardReqs.getAwardSubtitle())
+                .awardCount(strategyAwardReqs.getAwardCount())
+                .awardCountSurplus(strategyAwardReqs.getAwardCountSurplus())
+                .awardRate(strategyAwardReqs.getAwardRate())
+                .sort(strategyAwardReqs.getSort())
+                .build();
+
+        redisService.setValue(cacheKey, strategyAwardEntity);
+
+        return strategyAwardEntity;
     }
 }

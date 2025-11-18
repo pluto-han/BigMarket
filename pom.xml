@@ -13,6 +13,7 @@
         <module>BigMarket-trigger</module>
         <module>BigMarket-infrastructure</module>
         <module>BigMarket-types</module>
+        <module>big-market-api</module>
     </modules>
 
     <repositories>
@@ -39,10 +40,10 @@
 
     <developers>
         <developer>
-            <name>xiaofuge</name>
-            <email>184172133@qq.com</email>
-            <organization>fuzhengwei</organization>
-            <organizationUrl>https://github.com/fuzhengwei</organizationUrl>
+            <name>HangcongZhang</name>
+            <email>kriegsadler0205@gmail.com</email>
+            <organization>HancongZhang</organization>
+            <organizationUrl>https://github.com/pluto-han/BigMarket</organizationUrl>
         </developer>
     </developers>
 

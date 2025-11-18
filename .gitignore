@@ -41,4 +41,7 @@ build/
 /package.json
 /package-lock.json
 /BigMarket-app/data/log/
+/.idea/material_theme_project_new.xml
 /.idea/
+/.idea/
+/data/
