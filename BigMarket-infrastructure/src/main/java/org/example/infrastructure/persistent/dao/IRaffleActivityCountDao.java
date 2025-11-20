@@ -1,6 +1,7 @@
 package org.example.infrastructure.persistent.dao;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.example.infrastructure.persistent.po.RaffleActivityCount;
 
 /**
  * @program: BigMarket
@@ -10,4 +11,5 @@ import org.apache.ibatis.annotations.Mapper;
  **/
 @Mapper
 public interface IRaffleActivityCountDao {
+    RaffleActivityCount queryRaffleActivityCountByActivityId(Long activityId);
 }

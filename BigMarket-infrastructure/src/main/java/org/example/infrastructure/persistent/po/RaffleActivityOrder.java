@@ -10,7 +10,7 @@ import java.util.Date;
  * @create 2025-11-20 15:07
  */
 @Data
-public class RaffleActivityOrder {
+public class  RaffleActivityOrder {
 
     /**
      * 自增ID
