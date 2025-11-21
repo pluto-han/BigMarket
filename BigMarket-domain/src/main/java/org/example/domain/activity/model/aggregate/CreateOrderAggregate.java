@@ -18,13 +18,15 @@ import org.example.domain.activity.model.entity.ActivityOrderEntity;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateOrderAggregate {
+    private String userId;
 
-    /**
-     * 活动账户实体
-     */
-    private ActivityAccountEntity activityAccountEntity;
-    /**
-     * 活动订单实体
-     */
+    private Long activityId;
+
+    private Integer totalCount;
+
+    private Integer dayCount;
+
+    private Integer monthCount;
+    
     private ActivityOrderEntity activityOrderEntity;
 }
