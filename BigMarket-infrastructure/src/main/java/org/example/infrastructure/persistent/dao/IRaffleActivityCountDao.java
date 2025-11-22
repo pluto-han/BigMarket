@@ -11,5 +11,5 @@ import org.example.infrastructure.persistent.po.RaffleActivityCount;
  **/
 @Mapper
 public interface IRaffleActivityCountDao {
-    RaffleActivityCount queryRaffleActivityCountByActivityId(Long activityId);
+    RaffleActivityCount queryRaffleActivityCountByActivityCountId(Long activityCountId);
 }

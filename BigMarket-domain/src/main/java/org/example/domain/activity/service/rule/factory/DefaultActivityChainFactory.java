@@ -18,7 +18,7 @@ import java.util.Map;
 public class DefaultActivityChainFactory {
     private final IActionChain actionChain;
 
-    public DefaultActivityChainFactory(Map<String, IActionChain> actionChainGroup, ActivitySkuStockActionChain activitySkuStockActionChain) {
+    public DefaultActivityChainFactory(Map<String, IActionChain> actionChainGroup) {
         actionChain = actionChainGroup.get("activity_base_action");
         actionChain.appendNext(actionChainGroup.get(ActionModel.activity_sku_stock_action.getCode()));
     }
