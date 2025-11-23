@@ -145,7 +145,7 @@
             </dependency>
 
             <dependency>
-                <groupId>cn.bugstack.middleware</groupId>
+                <groupId>org.example.middleware</groupId>
                 <artifactId>db-router-spring-boot-starter</artifactId>
                 <version>1.0.2</version>
             </dependency>

@@ -8,7 +8,7 @@ import org.example.domain.activity.model.valobj.ActivitySkuStockKeyVO;
  * @author: Hancong Zhang
  * @create: 11/22/25 11:04 AM
  **/
-public interface ISkuStock {
+public interface IRaffleActivitySkuStockService {
     // 获取活动sku库存消耗队列
     ActivitySkuStockKeyVO takeQueueValue() throws InterruptedException;
 
