@@ -29,7 +29,7 @@ public class ActivityArmory implements IActivityArmory, IActivityDispatch {
         // 预热活动（查询时预热到缓存）
         activityRepository.queryRaffleActivityByActivityId(activitySkuEntity.getActivityId());
         // 预热活动次数 （查询时预热到缓存）
-        activityRepository.queryRaffleActivityByActivityId(activitySkuEntity.getActivityId());
+        activityRepository.queryRaffleActivityCountByActivityCountId(activitySkuEntity.getActivityCountId());
 
         return true;
     }
