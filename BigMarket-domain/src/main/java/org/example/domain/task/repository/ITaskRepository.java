@@ -1,0 +1,22 @@
+package org.example.domain.task.repository;
+
+
+import org.example.domain.task.model.entity.TaskEntity;
+
+import java.util.List;
+
+/**
+ * @program: BigMarket
+ * @description:
+ * @author: Hancong Zhang
+ * @create: 11/23/25 3:08 PM
+ **/
+public interface ITaskRepository {
+    void sendMessage(TaskEntity taskEntity);
+
+    void updateTaskSendMessageCompleted(String userId, String messageId);
+
+    void updateTaskSendMessageFail(String userId, String messageId);
+
+    List<TaskEntity> queryNoSendMessageTaskList();
+}

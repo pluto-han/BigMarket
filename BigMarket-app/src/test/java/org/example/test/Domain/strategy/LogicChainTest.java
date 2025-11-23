@@ -1,4 +1,4 @@
-package org.example.test.Domain;
+package org.example.test.Domain.strategy;
 
 import lombok.extern.slf4j.Slf4j;
 import org.example.domain.strategy.repository.IStrategyRepository;
@@ -6,7 +6,6 @@ import org.example.domain.strategy.service.armory.IStrategyArmory;
 import org.example.domain.strategy.service.rule.chain.ILogicChain;
 import org.example.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
 import org.example.domain.strategy.service.rule.chain.impl.RuleWeightLogicChain;
-import org.example.domain.strategy.service.rule.tree.factory.DefaultTreeFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
