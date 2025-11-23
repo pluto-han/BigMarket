@@ -32,10 +32,39 @@ public class SendMessageTaskJob {
     @Scheduled(cron = "0/5 * * * * ?")
     public void exec() {
         try {
-            dbRouter.setDBKey(1);
-            dbRouter.setDBKey(0);
-            List<TaskEntity> taskEntities = taskService.queryNoSendMessageTaskList();
-            log.info("测试结果:{}", taskEntities.size());
+            // 获取分库数量
+            int dbCount = dbRouter.dbCount();
+
+            // 逐个库扫描表【每个库一个任务表】
+            for (int dbIdx = 1; dbIdx <= dbCount; dbIdx++) {
+                int finalDbIdx = dbIdx;
+                executor.execute(() -> {
+                        try {
+                            dbRouter.setDBKey(finalDbIdx);
+                            dbRouter.setTBKey(0);
+                            List<TaskEntity> taskEntities = taskService.queryNoSendMessageTaskList();
+                            if (taskEntities.isEmpty()) {
+                                return;
+                            }
+
+                            // 发送MQ消息
+                            for (TaskEntity taskEntity : taskEntities) {
+                                // 开启线程发送，提高发送效率。配置的线程池策略为 CallerRunsPolicy，在ThreadPoolConfig配置中有四个策略，面试会问
+                                executor.execute(() -> {
+                                    try {
+                                        taskService.sendMessage(taskEntity);
+                                        taskService.updateTaskSendMessageCompleted(taskEntity.getUserId(), taskEntity.getMessageId());
+                                    } catch (Exception e) {
+                                        log.error("定时任务，扫描MQ任务表发送消息失败 userId:{} topic:{}", taskEntity.getUserId(), taskEntity.getTopic());
+                                        taskService.updateTaskSendMessageFail(taskEntity.getUserId(), taskEntity.getMessageId());
+                                    }
+                                });
+                            }
+                        } finally {
+                            dbRouter.clear();
+                        }
+                });
+            }
         } catch (Exception e) {
             log.error("定时任务，扫描MQ任务表发送消息失败", e);
         }
