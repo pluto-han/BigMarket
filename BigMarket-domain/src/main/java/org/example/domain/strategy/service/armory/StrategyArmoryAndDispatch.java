@@ -71,6 +71,12 @@ public class StrategyArmoryAndDispatch implements IStrategyArmory, IStrategyDisp
         return true;
     }
 
+    @Override
+    public boolean assembleLotteryStrategyByActivityId(Long activityId) {
+        Long strategyId = repository.queryStrategyIdByActivityId(activityId);
+        return assembleLotteryStrategy(strategyId);
+    }
+
     /**
      * core idea of assembling strategy: Trading space for time:
      * Probability values are represented by "slots". For example, if A has a prob of 60%, B has 30%, C has 10%. Total prob is 100%

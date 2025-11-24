@@ -20,7 +20,8 @@ public enum ResponseCode {
     ACTIVITY_SKU_STOCK_ERROR("ERR_BIZ_005", "活动商品库存不足"),
     ACCOUNT_QUOTA_ERROR("ERROR_BIZ_006", "账户总额度不足"),
     ACCOUNT_MONTH_QUOTA_ERROR("ERROR_BIZ_007", "账户月额度不足"),
-    ACCOUNT_DAY_QUOTA_ERROR("ERROR_BIZ_008", "账户日额度不足")
+    ACCOUNT_DAY_QUOTA_ERROR("ERROR_BIZ_008", "账户日额度不足"),
+    ACTIVTY_ORDER_ERROR("ERR_BIZ_009", "用户抽奖单已使用过，不可重复抽奖"),
     ;
 
     private String code;

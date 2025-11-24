@@ -33,6 +33,9 @@ import static org.example.types.enums.ResponseCode.UN_ASSEMBLED_STRATEGY_ARMORY;
 @Repository
 public class StrategyRepository implements IStrategyRepository {
     @Resource
+    private IRaffleActivityDao raffleActivityDao;
+
+    @Resource
     private IStrategyRuleDao strategyRuleDao;
 
     @Resource
@@ -40,7 +43,7 @@ public class StrategyRepository implements IStrategyRepository {
 
     @Resource
     private IStrategyAwardDao strategyAwardDao;
-    
+
     @Resource
     private IRedisService redisService;
 
@@ -53,8 +56,11 @@ public class StrategyRepository implements IStrategyRepository {
     @Resource
     private IRuleTreeNodeLineDao ruleTreeNodeLineDao;
 
+    @Resource
+    private IRaffleActivityAccountDayDao raffleActivityAccountDayDao;
     /**
      * return Award List under given strategy
+     *
      * @param strategyId
      * @return List<StrategyAwardEntity>
      */
@@ -65,7 +71,7 @@ public class StrategyRepository implements IStrategyRepository {
         List<StrategyAwardEntity> strategyAwardEntities = redisService.getValue(cacheKey);
 
         // if redis cache hit, then return directly
-        if(strategyAwardEntities != null && !strategyAwardEntities.isEmpty()){
+        if (strategyAwardEntities != null && !strategyAwardEntities.isEmpty()) {
             return strategyAwardEntities;
         }
 
@@ -75,15 +81,15 @@ public class StrategyRepository implements IStrategyRepository {
         strategyAwardEntities = new ArrayList<>(strategyAwards.size());
         for (StrategyAward strategyAward : strategyAwards) {
             StrategyAwardEntity strategyAwardEntity = StrategyAwardEntity.builder()
-                        .strategyId(strategyAward.getStrategyId())
-                        .awardId(strategyAward.getAwardId())
-                        .awardTitle(strategyAward.getAwardTitle())
-                        .awardSubtitle(strategyAward.getAwardSubtitle())
-                        .awardCount(strategyAward.getAwardCount())
-                        .awardCountSurplus(strategyAward.getAwardCountSurplus())
-                        .awardRate(strategyAward.getAwardRate())
-                        .sort(strategyAward.getSort())
-                        .build();
+                    .strategyId(strategyAward.getStrategyId())
+                    .awardId(strategyAward.getAwardId())
+                    .awardTitle(strategyAward.getAwardTitle())
+                    .awardSubtitle(strategyAward.getAwardSubtitle())
+                    .awardCount(strategyAward.getAwardCount())
+                    .awardCountSurplus(strategyAward.getAwardCountSurplus())
+                    .awardRate(strategyAward.getAwardRate())
+                    .sort(strategyAward.getSort())
+                    .build();
 
             strategyAwardEntities.add(strategyAwardEntity);
         }
@@ -98,6 +104,7 @@ public class StrategyRepository implements IStrategyRepository {
     /**
      * N.B. rateRange should also be stored, for the future implementation of microservice
      * store StrategyAwardSearchRateTables into Redis
+     *
      * @param key
      * @param rateRange
      * @param strategyAwardSearchRateTable
@@ -136,7 +143,7 @@ public class StrategyRepository implements IStrategyRepository {
         String cacheKey = Constants.RedisKey.STRATEGY_KEY + strategyId;
         StrategyEntity strategyEntity = redisService.getValue(cacheKey);
         if (null != strategyEntity) {
-            return  strategyEntity;
+            return strategyEntity;
         }
         // then, try DB
         Strategy strategy = strategyDao.queryStrategyByStrategyId(strategyId);
@@ -255,13 +262,13 @@ public class StrategyRepository implements IStrategyRepository {
     public Boolean substractionAwardStock(String cacheKey) {
         // decr returns surplus value
         long surplus = redisService.decr(cacheKey);
-        if(surplus < 0) {
+        if (surplus < 0) {
             redisService.setValue(cacheKey, 0);
             return false;
         }
         String lockKey = cacheKey + Constants.UNDERLINE + surplus;
         Boolean lock = redisService.setNx(lockKey);
-        if(!lock) {
+        if (!lock) {
             log.info("策略奖品库存加锁失败：{}", lockKey);
         }
 
@@ -320,5 +327,27 @@ public class StrategyRepository implements IStrategyRepository {
         redisService.setValue(cacheKey, strategyAwardEntity);
 
         return strategyAwardEntity;
+    }
+
+    @Override
+    public Long queryStrategyIdByActivityId(Long activityId) {
+        return raffleActivityDao.queryStrategyIdByActivityId(activityId);
+    }
+
+    @Override
+    public Integer queryTodayUserRaffleCount(String userId, Long strategyId) {
+        Long activityId = raffleActivityDao.queryActivityIdByStrategyId(strategyId);
+        RaffleActivityAccountDay raffleActivityAccountDayReq = new RaffleActivityAccountDay();
+        raffleActivityAccountDayReq.setUserId(userId);
+        raffleActivityAccountDayReq.setActivityId(activityId);
+        raffleActivityAccountDayReq.setDay(raffleActivityAccountDayReq.currentDay());
+        RaffleActivityAccountDay raffleActivityAccountDay = raffleActivityAccountDayDao.queryActivityAccountDayByUserId(raffleActivityAccountDayReq);
+
+        if (null == raffleActivityAccountDay) {
+            return 0;
+        }
+
+        //今日可参与的 =  总次数 - 剩余的
+        return raffleActivityAccountDay.getDayCount() - raffleActivityAccountDay.getDayCountSurplus();
     }
 }
