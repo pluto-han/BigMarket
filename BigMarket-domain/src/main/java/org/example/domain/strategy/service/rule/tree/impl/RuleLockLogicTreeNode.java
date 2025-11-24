@@ -31,11 +31,7 @@ public class RuleLockLogicTreeNode implements ILogicTreeNode {
             throw new RuntimeException("规则过滤-次数锁异常 ruleValue:" + ruleValue + "配置不正确");
         }
 
-        log.info("你咋没输出1?");
-
         Integer userRaffleCount = strategyRepository.queryTodayUserRaffleCount(userId, strategyId);
-
-        log.info("你咋没输出2?");
 
         // 用户抽奖次数大于规则限定值，放行
         if(userRaffleCount > raffleCount){

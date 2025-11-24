@@ -1,6 +1,5 @@
 package org.example.infrastructure.persistent.dao;
 
-import cn.bugstack.middleware.db.router.annotation.DBRouter;
 import cn.bugstack.middleware.db.router.annotation.DBRouterStrategy;
 import org.apache.ibatis.annotations.Mapper;
 import org.example.infrastructure.persistent.po.UserAwardRecord;
@@ -14,6 +13,4 @@ import org.example.infrastructure.persistent.po.UserAwardRecord;
 @DBRouterStrategy(splitTable = true)
 public interface IUserAwardRecordDao {
     void insert(UserAwardRecord userAwardRecord);
-
-    int countUnusedOrder(UserAwardRecord userAwardRecordReq);
 }
