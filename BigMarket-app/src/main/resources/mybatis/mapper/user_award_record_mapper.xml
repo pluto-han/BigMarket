@@ -24,4 +24,10 @@
                  )
     </insert>
 
+    <select id="countUnusedOrder" parameterType="org.example.infrastructure.persistent.po.UserAwardRecord" resultType="java.lang.Integer">
+        select count(*)
+        from user_award_record
+        where orderId = #{orderId}
+    </select>
+
 </mapper>

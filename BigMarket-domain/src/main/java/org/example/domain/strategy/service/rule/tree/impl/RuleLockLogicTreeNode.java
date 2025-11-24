@@ -31,14 +31,21 @@ public class RuleLockLogicTreeNode implements ILogicTreeNode {
             throw new RuntimeException("规则过滤-次数锁异常 ruleValue:" + ruleValue + "配置不正确");
         }
 
+        log.info("你咋没输出1?");
+
         Integer userRaffleCount = strategyRepository.queryTodayUserRaffleCount(userId, strategyId);
 
+        log.info("你咋没输出2?");
+
         // 用户抽奖次数大于规则限定值，放行
-        if(userRaffleCount >= raffleCount){
+        if(userRaffleCount > raffleCount){
+            log.info("规则过滤-次数锁【放行】 userId:{} strategyId:{} awardId:{} raffleCount:{} userRaffleCount:{}", userId, strategyId, awardId, userRaffleCount, userRaffleCount);
             return DefaultTreeFactory.TreeActionEntity.builder()
                     .ruleLogicCheckType(RuleLogicCheckTypeVO.ALLOW)
                     .build();
         }
+
+        log.info("规则过滤-次数锁【拦截】 userId:{} strategyId:{} awardId:{} raffleCount:{} userRaffleCount:{}", userId, strategyId, awardId, userRaffleCount, userRaffleCount);
 
         // 用户抽奖次数小于规则限定值，规则拦截
         return DefaultTreeFactory.TreeActionEntity.builder()

@@ -80,7 +80,7 @@ public class AwardRepository implements IAwardRepository {
                  try {
                      // insert record
                      userAwardRecordDao.insert(userAwardRecord);
-                     // insert task
+
                      taskDao.insert(task);
                      // update raffle order
                      int count = userRaffleOrderDao.updateUserRaffleOrderStateUsed(userRaffleOrderReq);

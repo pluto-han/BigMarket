@@ -347,7 +347,7 @@ public class StrategyRepository implements IStrategyRepository {
             return 0;
         }
 
-        //今日可参与的 =  总次数 - 剩余的
+        //今日参与的 =  总次数 - 剩余的
         return raffleActivityAccountDay.getDayCount() - raffleActivityAccountDay.getDayCountSurplus();
     }
 }
