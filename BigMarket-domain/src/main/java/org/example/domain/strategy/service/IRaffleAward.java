@@ -15,4 +15,6 @@ public interface IRaffleAward {
      * 根据策略id查询抽奖奖品列表配置
      */
     List<StrategyAwardEntity> queryRaffleStrategyAwardList(Long strategyId);
+
+    List<StrategyAwardEntity> queryRaffleStrategyAwardListByActivityId(Long activityId);
 }

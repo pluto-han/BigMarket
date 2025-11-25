@@ -1,4 +1,4 @@
-package org.example.test.Domain.activity;
+package org.example.test.domain.activity;
 
 import org.example.domain.activity.model.entity.SkuRechargeEntity;
 import org.example.domain.activity.service.IRaffleActivityAccountQuotaService;

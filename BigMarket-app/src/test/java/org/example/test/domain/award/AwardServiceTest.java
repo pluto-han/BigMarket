@@ -1,4 +1,4 @@
-package org.example.test.Domain.award;
+package org.example.test.domain.award;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
