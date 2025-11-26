@@ -10,6 +10,7 @@ import org.example.domain.strategy.service.rule.tree.factory.DefaultTreeFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * @program: BigMarket
@@ -27,10 +28,10 @@ public class RuleStockLogicTreeNode implements ILogicTreeNode {
     private IStrategyDispatch strategyDispatch;
 
     @Override
-    public DefaultTreeFactory.TreeActionEntity logic(String userId, Long strategyId, Integer awardId, String ruleValue) {
+    public DefaultTreeFactory.TreeActionEntity logic(String userId, Long strategyId, Integer awardId, String ruleValue, Date endDataTime) {
         log.info("规则过滤-库存扣减 userId:{} strategyId:{} awardId:{}", userId, strategyId, awardId);
         // 扣减库存
-        Boolean status = strategyDispatch.subtractionAwardStock(strategyId, awardId);
+        Boolean status = strategyDispatch.subtractionAwardStock(strategyId, awardId, endDataTime);
         // 扣减成功
         if (status) {
             // 写入延迟队列，延迟消费更新数据库记录 【在trigger的job; UpdateAwardStockJob 下消费队列，更新数据库记录】

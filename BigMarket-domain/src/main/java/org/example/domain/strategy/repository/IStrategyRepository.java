@@ -8,6 +8,7 @@ import org.example.domain.strategy.model.valobj.StrategyAwardRuleModelVO;
 import org.example.domain.strategy.model.valobj.StrategyAwardStockKeyVO;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +66,9 @@ public interface IStrategyRepository {
      * @return
      */
     Boolean substractionAwardStock(String cacheKey);
+
+    Boolean substractionAwardStock(String cacheKey, Date endDateTime);
+
 
     void awardStockConsumeSendQueue(StrategyAwardStockKeyVO strategyAwardStockKeyVO);
 

@@ -17,6 +17,7 @@ import org.example.domain.strategy.service.armory.IStrategyArmory;
 import org.example.trigger.api.IRaffleActivityService;
 import org.example.trigger.api.dto.ActivityDrawRequestDTO;
 import org.example.trigger.api.dto.ActivityDrawResponseDTO;
+import org.example.trigger.api.dto.RaffleAwardListResponseDTO;
 import org.example.types.enums.ResponseCode;
 import org.example.types.exception.AppException;
 import org.example.types.model.Response;
@@ -24,11 +25,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @RestController()
 @CrossOrigin("${app.config.cross-origin}")
-@RequestMapping("/api/${app.config.api-version}/raffle/activity")
+@RequestMapping("/api/${app.config.api-version}/raffle/activity/")
 public class RaffleActivityController implements IRaffleActivityService {
 
     @Resource
@@ -75,7 +77,13 @@ public class RaffleActivityController implements IRaffleActivityService {
             log.info("活动抽奖 userId:{} activityId:{}", request.getUserId(), request.getActivityId());
             // 1. 参数校验
             if (StringUtils.isBlank(request.getUserId()) || null == request.getActivityId()) {
-                throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
+                //throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
+                if (StringUtils.isBlank(request.getUserId()) || null == request.getActivityId()) {
+                    return Response.<ActivityDrawResponseDTO>builder()
+                            .code(ResponseCode.ILLEGAL_PARAMETER.getCode())
+                            .info(ResponseCode.ILLEGAL_PARAMETER.getInfo())
+                            .build();
+                }
             }
 
             // 2. 参与活动 - 创建参与记录订单
@@ -86,6 +94,7 @@ public class RaffleActivityController implements IRaffleActivityService {
             RaffleAwardEntity raffleAwardEntity = raffleStrategy.performRaffle(RaffleFactorEntity.builder()
                     .userId(request.getUserId())
                     .strategyId(userRaffleOrderEntity.getStrategyId())
+                    .endDateTime(userRaffleOrderEntity.getEndDateTime())
                     .build());
 
             // 4. 存放结果 - 写入中奖记录

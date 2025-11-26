@@ -1,0 +1,353 @@
+25-11-26.03:29:16.621 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-1] INFO  SimpleMessageListenerContainer - Restarting Consumer@7d8f2eec: tags=[[amq.ctag-KfpAgQbq_p0DJch828L4yg]], channel=Cached Rabbit Channel: AMQChannel(amqp://admin@127.0.0.1:5672/,1), conn: Proxy@77cd235b Shared Rabbit Connection: SimpleConnection@595ec862 [delegate=amqp://admin@127.0.0.1:5672/, localPort= 49918], acknowledgeMode=AUTO local queue size=0
+25-11-26.03:29:16.621 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-1] INFO  SimpleMessageListenerContainer - Restarting Consumer@4387d2f4: tags=[[amq.ctag-FywkSYfP3SLrqZUzI7pYBw]], channel=Cached Rabbit Channel: AMQChannel(amqp://admin@127.0.0.1:5672/,2), conn: Proxy@77cd235b Shared Rabbit Connection: SimpleConnection@595ec862 [delegate=amqp://admin@127.0.0.1:5672/, localPort= 49918], acknowledgeMode=AUTO local queue size=0
+25-11-26.03:29:16.696 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.03:29:16.699 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.03:29:16.703 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] ERROR SimpleMessageListenerContainer - Failed to check/redeclare auto-delete queue(s).
+org.springframework.amqp.AmqpConnectException: java.net.ConnectException: Connection refused (Connection refused)
+	at org.springframework.amqp.rabbit.support.RabbitExceptionTranslator.convertRabbitAccessException(RabbitExceptionTranslator.java:61)
+	at org.springframework.amqp.rabbit.connection.AbstractConnectionFactory.createBareConnection(AbstractConnectionFactory.java:603)
+	at org.springframework.amqp.rabbit.connection.CachingConnectionFactory.createConnection(CachingConnectionFactory.java:725)
+	at org.springframework.amqp.rabbit.connection.CachingConnectionFactory.createBareChannel(CachingConnectionFactory.java:676)
+	at org.springframework.amqp.rabbit.connection.CachingConnectionFactory.getCachedChannelProxy(CachingConnectionFactory.java:650)
+	at org.springframework.amqp.rabbit.connection.CachingConnectionFactory.getChannel(CachingConnectionFactory.java:540)
+	at org.springframework.amqp.rabbit.connection.CachingConnectionFactory.access$1600(CachingConnectionFactory.java:100)
+	at org.springframework.amqp.rabbit.connection.CachingConnectionFactory$ChannelCachingConnectionProxy.createChannel(CachingConnectionFactory.java:1418)
+	at org.springframework.amqp.rabbit.core.RabbitTemplate.doExecute(RabbitTemplate.java:2216)
+	at org.springframework.amqp.rabbit.core.RabbitTemplate.execute(RabbitTemplate.java:2183)
+	at org.springframework.amqp.rabbit.core.RabbitTemplate.execute(RabbitTemplate.java:2163)
+	at org.springframework.amqp.rabbit.core.RabbitAdmin.getQueueInfo(RabbitAdmin.java:463)
+	at org.springframework.amqp.rabbit.core.RabbitAdmin.getQueueProperties(RabbitAdmin.java:447)
+	at org.springframework.amqp.rabbit.listener.AbstractMessageListenerContainer.attemptDeclarations(AbstractMessageListenerContainer.java:1942)
+	at org.springframework.amqp.rabbit.listener.AbstractMessageListenerContainer.redeclareElementsIfNecessary(AbstractMessageListenerContainer.java:1915)
+	at org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer$AsyncMessageProcessingConsumer.initialize(SimpleMessageListenerContainer.java:1384)
+	at org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer$AsyncMessageProcessingConsumer.run(SimpleMessageListenerContainer.java:1230)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:607)
+	at com.rabbitmq.client.impl.SocketFrameHandlerFactory.create(SocketFrameHandlerFactory.java:60)
+	at com.rabbitmq.client.ConnectionFactory.newConnection(ConnectionFactory.java:1223)
+	at com.rabbitmq.client.ConnectionFactory.newConnection(ConnectionFactory.java:1173)
+	at org.springframework.amqp.rabbit.connection.AbstractConnectionFactory.connectAddresses(AbstractConnectionFactory.java:641)
+	at org.springframework.amqp.rabbit.connection.AbstractConnectionFactory.connect(AbstractConnectionFactory.java:616)
+	at org.springframework.amqp.rabbit.connection.AbstractConnectionFactory.createBareConnection(AbstractConnectionFactory.java:566)
+	... 16 common frames omitted
+25-11-26.03:29:16.703 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] ERROR SimpleMessageListenerContainer - Failed to check/redeclare auto-delete queue(s).
+org.springframework.amqp.AmqpConnectException: java.net.ConnectException: Connection refused (Connection refused)
+	at org.springframework.amqp.rabbit.support.RabbitExceptionTranslator.convertRabbitAccessException(RabbitExceptionTranslator.java:61)
+	at org.springframework.amqp.rabbit.connection.AbstractConnectionFactory.createBareConnection(AbstractConnectionFactory.java:603)
+	at org.springframework.amqp.rabbit.connection.CachingConnectionFactory.createConnection(CachingConnectionFactory.java:725)
+	at org.springframework.amqp.rabbit.connection.CachingConnectionFactory.createBareChannel(CachingConnectionFactory.java:676)
+	at org.springframework.amqp.rabbit.connection.CachingConnectionFactory.getCachedChannelProxy(CachingConnectionFactory.java:650)
+	at org.springframework.amqp.rabbit.connection.CachingConnectionFactory.getChannel(CachingConnectionFactory.java:540)
+	at org.springframework.amqp.rabbit.connection.CachingConnectionFactory.access$1600(CachingConnectionFactory.java:100)
+	at org.springframework.amqp.rabbit.connection.CachingConnectionFactory$ChannelCachingConnectionProxy.createChannel(CachingConnectionFactory.java:1418)
+	at org.springframework.amqp.rabbit.core.RabbitTemplate.doExecute(RabbitTemplate.java:2216)
+	at org.springframework.amqp.rabbit.core.RabbitTemplate.execute(RabbitTemplate.java:2183)
+	at org.springframework.amqp.rabbit.core.RabbitTemplate.execute(RabbitTemplate.java:2163)
+	at org.springframework.amqp.rabbit.core.RabbitAdmin.getQueueInfo(RabbitAdmin.java:463)
+	at org.springframework.amqp.rabbit.core.RabbitAdmin.getQueueProperties(RabbitAdmin.java:447)
+	at org.springframework.amqp.rabbit.listener.AbstractMessageListenerContainer.attemptDeclarations(AbstractMessageListenerContainer.java:1942)
+	at org.springframework.amqp.rabbit.listener.AbstractMessageListenerContainer.redeclareElementsIfNecessary(AbstractMessageListenerContainer.java:1915)
+	at org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer$AsyncMessageProcessingConsumer.initialize(SimpleMessageListenerContainer.java:1384)
+	at org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer$AsyncMessageProcessingConsumer.run(SimpleMessageListenerContainer.java:1230)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:607)
+	at com.rabbitmq.client.impl.SocketFrameHandlerFactory.create(SocketFrameHandlerFactory.java:60)
+	at com.rabbitmq.client.ConnectionFactory.newConnection(ConnectionFactory.java:1223)
+	at com.rabbitmq.client.ConnectionFactory.newConnection(ConnectionFactory.java:1173)
+	at org.springframework.amqp.rabbit.connection.AbstractConnectionFactory.connectAddresses(AbstractConnectionFactory.java:641)
+	at org.springframework.amqp.rabbit.connection.AbstractConnectionFactory.connect(AbstractConnectionFactory.java:616)
+	at org.springframework.amqp.rabbit.connection.AbstractConnectionFactory.createBareConnection(AbstractConnectionFactory.java:566)
+	... 16 common frames omitted
+25-11-26.03:29:16.703 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.03:29:16.703 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.03:29:20.027 [pool-3-thread-19] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@49e3690 (Communications link failure
+
+The last packet successfully received from the server was 7,736 milliseconds ago. The last packet sent successfully to the server was 7,737 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.027 [pool-3-thread-20] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@6a86aa9b (Communications link failure
+
+The last packet successfully received from the server was 7,736 milliseconds ago. The last packet sent successfully to the server was 7,737 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.028 [pool-3-thread-19] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@519b8018 (Communications link failure
+
+The last packet successfully received from the server was 469,331 milliseconds ago. The last packet sent successfully to the server was 469,332 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.028 [pool-3-thread-20] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@2122259d (Communications link failure
+
+The last packet successfully received from the server was 522,151 milliseconds ago. The last packet sent successfully to the server was 522,151 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.030 [pool-3-thread-19] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@4e9dbcc6 (Communications link failure
+
+The last packet successfully received from the server was 459,184 milliseconds ago. The last packet sent successfully to the server was 459,184 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.030 [pool-3-thread-20] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@4365147e (Communications link failure
+
+The last packet successfully received from the server was 482,443 milliseconds ago. The last packet sent successfully to the server was 482,444 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.031 [pool-3-thread-19] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3bc23933 (Communications link failure
+
+The last packet successfully received from the server was 458,561 milliseconds ago. The last packet sent successfully to the server was 458,561 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.031 [pool-3-thread-20] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1ce8acfb (Communications link failure
+
+The last packet successfully received from the server was 475,700 milliseconds ago. The last packet sent successfully to the server was 475,700 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.033 [pool-3-thread-20] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1503de7b (Communications link failure
+
+The last packet successfully received from the server was 470,642 milliseconds ago. The last packet sent successfully to the server was 470,643 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.034 [pool-3-thread-19] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@5f0b24fc (Communications link failure
+
+The last packet successfully received from the server was 437,421 milliseconds ago. The last packet sent successfully to the server was 437,421 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.035 [pool-3-thread-20] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@253d1f8b (Communications link failure
+
+The last packet successfully received from the server was 466,378 milliseconds ago. The last packet sent successfully to the server was 466,378 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.036 [pool-3-thread-19] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@521de445 (Communications link failure
+
+The last packet successfully received from the server was 431,445 milliseconds ago. The last packet sent successfully to the server was 431,445 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.036 [pool-3-thread-20] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@4e1039b6 (Communications link failure
+
+The last packet successfully received from the server was 453,072 milliseconds ago. The last packet sent successfully to the server was 453,072 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.038 [pool-3-thread-19] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@7145194c (Communications link failure
+
+The last packet successfully received from the server was 424,750 milliseconds ago. The last packet sent successfully to the server was 424,750 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.038 [pool-3-thread-20] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1cbd2f6e (Communications link failure
+
+The last packet successfully received from the server was 448,907 milliseconds ago. The last packet sent successfully to the server was 448,907 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.040 [pool-3-thread-19] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@5be4bdf6 (Communications link failure
+
+The last packet successfully received from the server was 397,078 milliseconds ago. The last packet sent successfully to the server was 397,078 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.040 [pool-3-thread-20] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@51b1aa35 (Communications link failure
+
+The last packet successfully received from the server was 421,702 milliseconds ago. The last packet sent successfully to the server was 421,703 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.043 [pool-3-thread-20] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1e23e43c (Communications link failure
+
+The last packet successfully received from the server was 420,781 milliseconds ago. The last packet sent successfully to the server was 420,782 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.045 [pool-3-thread-19] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@5d4e4eb2 (Communications link failure
+
+The last packet successfully received from the server was 392,003 milliseconds ago. The last packet sent successfully to the server was 392,003 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.046 [pool-3-thread-20] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3f9b6d00 (Communications link failure
+
+The last packet successfully received from the server was 417,308 milliseconds ago. The last packet sent successfully to the server was 417,308 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.046 [pool-3-thread-19] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@60ccb692 (Communications link failure
+
+The last packet successfully received from the server was 374,740 milliseconds ago. The last packet sent successfully to the server was 374,741 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.048 [pool-3-thread-20] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@4aa8e3c2 (Communications link failure
+
+The last packet successfully received from the server was 415,720 milliseconds ago. The last packet sent successfully to the server was 415,721 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.048 [pool-3-thread-19] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@391a5cbe (Communications link failure
+
+The last packet successfully received from the server was 372,428 milliseconds ago. The last packet sent successfully to the server was 372,428 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.049 [pool-3-thread-20] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@161408a0 (Communications link failure
+
+The last packet successfully received from the server was 384,019 milliseconds ago. The last packet sent successfully to the server was 384,019 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.049 [pool-3-thread-19] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@47ef4d66 (Communications link failure
+
+The last packet successfully received from the server was 362,891 milliseconds ago. The last packet sent successfully to the server was 362,891 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.052 [pool-3-thread-19] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@68fba0f7 (Communications link failure
+
+The last packet successfully received from the server was 354,555 milliseconds ago. The last packet sent successfully to the server was 354,555 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.052 [pool-3-thread-20] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@17970c5a (Communications link failure
+
+The last packet successfully received from the server was 376,887 milliseconds ago. The last packet sent successfully to the server was 376,887 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.053 [pool-3-thread-20] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@730080c5 (Communications link failure
+
+The last packet successfully received from the server was 346,001 milliseconds ago. The last packet sent successfully to the server was 346,001 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.053 [pool-3-thread-19] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@6d06f35c (Communications link failure
+
+The last packet successfully received from the server was 349,760 milliseconds ago. The last packet sent successfully to the server was 349,760 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:20.054 [pool-3-thread-19] WARN  PoolBase               - Retail_HikariCP - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@692bdee (Communications link failure
+
+The last packet successfully received from the server was 348,254 milliseconds ago. The last packet sent successfully to the server was 348,254 milliseconds ago.). Possibly consider using a shorter maxLifetime value.
+25-11-26.03:29:21.735 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] WARN  SimpleMessageListenerContainer - Consumer raised exception, processing can restart if the connection factory supports it. Exception summary: org.springframework.amqp.AmqpConnectException: java.net.ConnectException: Connection refused (Connection refused)
+25-11-26.03:29:21.736 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-2] INFO  SimpleMessageListenerContainer - Restarting Consumer@7846b222: tags=[[]], channel=null, acknowledgeMode=AUTO local queue size=0
+25-11-26.03:29:21.737 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-3] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.03:29:21.738 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-3] ERROR SimpleMessageListenerContainer - Failed to check/redeclare auto-delete queue(s).
+25-11-26.03:29:21.738 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-3] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.03:29:21.759 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] WARN  SimpleMessageListenerContainer - Consumer raised exception, processing can restart if the connection factory supports it. Exception summary: org.springframework.amqp.AmqpConnectException: java.net.ConnectException: Connection refused (Connection refused)
+25-11-26.03:29:21.759 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-2] INFO  SimpleMessageListenerContainer - Restarting Consumer@34aeeab3: tags=[[]], channel=null, acknowledgeMode=AUTO local queue size=0
+25-11-26.03:29:21.761 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-3] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.03:29:21.762 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-3] ERROR SimpleMessageListenerContainer - Failed to check/redeclare auto-delete queue(s).
+25-11-26.03:29:21.762 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-3] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.03:29:23.309 [scheduling-1    ] ERROR UpdateAwardStockJob    - 定时任务， 更新奖品消耗库存失败
+org.springframework.data.redis.RedisConnectionFailureException: Unable to write command into connection! Increase nettyThreads setting. Node source: NodeSource [slot=0, addr=null, redisClient=null, redirect=null, entry=null], connection: RedisConnection@542982041 [redisClient=[addr=redis://127.0.0.1:16379], channel=[id: 0xe841acd1, L:0.0.0.0/0.0.0.0:56852], currentCommand=null, usage=1], command: (LPOP), params: [strategy_award_count_queue_key] after 3 retry attempts; nested exception is org.redisson.client.WriteRedisConnectionException: Unable to write command into connection! Increase nettyThreads setting. Node source: NodeSource [slot=0, addr=null, redisClient=null, redirect=null, entry=null], connection: RedisConnection@542982041 [redisClient=[addr=redis://127.0.0.1:16379], channel=[id: 0xe841acd1, L:0.0.0.0/0.0.0.0:56852], currentCommand=null, usage=1], command: (LPOP), params: [strategy_award_count_queue_key] after 3 retry attempts
+	at org.redisson.spring.data.connection.RedissonExceptionConverter.convert(RedissonExceptionConverter.java:40)
+	at org.redisson.spring.data.connection.RedissonExceptionConverter.convert(RedissonExceptionConverter.java:35)
+	at org.springframework.data.redis.PassThroughExceptionTranslationStrategy.translate(PassThroughExceptionTranslationStrategy.java:44)
+	at org.redisson.spring.data.connection.RedissonConnectionFactory.translateExceptionIfPossible(RedissonConnectionFactory.java:91)
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:242)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:152)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:708)
+	at org.example.infrastructure.persistent.repository.StrategyRepository$$EnhancerBySpringCGLIB$$a83ef6bb.takeQueueValue(<generated>)
+	at org.example.domain.strategy.service.raffle.DefaultRaffleStrategy.takeQueueValue(DefaultRaffleStrategy.java:70)
+	at org.example.trigger.job.UpdateAwardStockJob.exec(UpdateAwardStockJob.java:26)
+	at sun.reflect.GeneratedMethodAccessor50.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:84)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:95)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: org.redisson.client.WriteRedisConnectionException: Unable to write command into connection! Increase nettyThreads setting. Node source: NodeSource [slot=0, addr=null, redisClient=null, redirect=null, entry=null], connection: RedisConnection@542982041 [redisClient=[addr=redis://127.0.0.1:16379], channel=[id: 0xe841acd1, L:0.0.0.0/0.0.0.0:56852], currentCommand=null, usage=1], command: (LPOP), params: [strategy_award_count_queue_key] after 3 retry attempts
+	at org.redisson.command.RedisExecutor.checkWriteFuture(RedisExecutor.java:345)
+	at org.redisson.command.RedisExecutor.lambda$execute$3(RedisExecutor.java:188)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:590)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:557)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:492)
+	at io.netty.util.concurrent.DefaultPromise.setValue0(DefaultPromise.java:636)
+	at io.netty.util.concurrent.DefaultPromise.setFailure0(DefaultPromise.java:629)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:118)
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.safeSetFailure(AbstractChannel.java:999)
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.write(AbstractChannel.java:860)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.write(DefaultChannelPipeline.java:1367)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeWrite0(AbstractChannelHandlerContext.java:877)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeWriteAndFlush(AbstractChannelHandlerContext.java:940)
+	at io.netty.channel.AbstractChannelHandlerContext$WriteTask.run(AbstractChannelHandlerContext.java:1247)
+	at io.netty.util.concurrent.AbstractEventExecutor.runTask(AbstractEventExecutor.java:174)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:167)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:470)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:569)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	... 1 common frames omitted
+Caused by: io.netty.channel.StacklessClosedChannelException: null
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.write(Object, ChannelPromise)(Unknown Source)
+25-11-26.03:29:26.598 [scheduling-1    ] ERROR UpdateActivitySkuStockJob - 定时任务，更新活动sku库存失败
+org.springframework.data.redis.RedisConnectionFailureException: Unable to write command into connection! Increase nettyThreads setting. Node source: NodeSource [slot=0, addr=null, redisClient=null, redirect=null, entry=null], connection: RedisConnection@388195255 [redisClient=[addr=redis://127.0.0.1:16379], channel=[id: 0xb49c401a, L:0.0.0.0/0.0.0.0:56818], currentCommand=null, usage=1], command: (LPOP), params: [activity_sku_count_query_key] after 3 retry attempts; nested exception is org.redisson.client.WriteRedisConnectionException: Unable to write command into connection! Increase nettyThreads setting. Node source: NodeSource [slot=0, addr=null, redisClient=null, redirect=null, entry=null], connection: RedisConnection@388195255 [redisClient=[addr=redis://127.0.0.1:16379], channel=[id: 0xb49c401a, L:0.0.0.0/0.0.0.0:56818], currentCommand=null, usage=1], command: (LPOP), params: [activity_sku_count_query_key] after 3 retry attempts
+	at org.redisson.spring.data.connection.RedissonExceptionConverter.convert(RedissonExceptionConverter.java:40)
+	at org.redisson.spring.data.connection.RedissonExceptionConverter.convert(RedissonExceptionConverter.java:35)
+	at org.springframework.data.redis.PassThroughExceptionTranslationStrategy.translate(PassThroughExceptionTranslationStrategy.java:44)
+	at org.redisson.spring.data.connection.RedissonConnectionFactory.translateExceptionIfPossible(RedissonConnectionFactory.java:91)
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:242)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:152)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:708)
+	at org.example.infrastructure.persistent.repository.ActivityRepository$$EnhancerBySpringCGLIB$$bd3b2e0f.takeQueueValue(<generated>)
+	at org.example.domain.activity.service.quota.RaffleActivityAccountQuotaService.takeQueueValue(RaffleActivityAccountQuotaService.java:70)
+	at org.example.trigger.job.UpdateActivitySkuStockJob.exec(UpdateActivitySkuStockJob.java:27)
+	at sun.reflect.GeneratedMethodAccessor51.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:84)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:95)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: org.redisson.client.WriteRedisConnectionException: Unable to write command into connection! Increase nettyThreads setting. Node source: NodeSource [slot=0, addr=null, redisClient=null, redirect=null, entry=null], connection: RedisConnection@388195255 [redisClient=[addr=redis://127.0.0.1:16379], channel=[id: 0xb49c401a, L:0.0.0.0/0.0.0.0:56818], currentCommand=null, usage=1], command: (LPOP), params: [activity_sku_count_query_key] after 3 retry attempts
+	at org.redisson.command.RedisExecutor.checkWriteFuture(RedisExecutor.java:345)
+	at org.redisson.command.RedisExecutor.lambda$execute$3(RedisExecutor.java:188)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:590)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:557)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:492)
+	at io.netty.util.concurrent.DefaultPromise.setValue0(DefaultPromise.java:636)
+	at io.netty.util.concurrent.DefaultPromise.setFailure0(DefaultPromise.java:629)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:118)
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.safeSetFailure(AbstractChannel.java:999)
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.write(AbstractChannel.java:860)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.write(DefaultChannelPipeline.java:1367)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeWrite0(AbstractChannelHandlerContext.java:877)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeWriteAndFlush(AbstractChannelHandlerContext.java:940)
+	at io.netty.channel.AbstractChannelHandlerContext$WriteTask.run(AbstractChannelHandlerContext.java:1247)
+	at io.netty.util.concurrent.AbstractEventExecutor.runTask(AbstractEventExecutor.java:174)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:167)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:470)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:569)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	... 1 common frames omitted
+Caused by: io.netty.channel.StacklessClosedChannelException: null
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.write(Object, ChannelPromise)(Unknown Source)
+25-11-26.03:29:26.801 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-3] WARN  SimpleMessageListenerContainer - Consumer raised exception, processing can restart if the connection factory supports it. Exception summary: org.springframework.amqp.AmqpConnectException: java.net.ConnectException: Connection refused (Connection refused)
+25-11-26.03:29:26.802 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-3] INFO  SimpleMessageListenerContainer - Restarting Consumer@4cf372f2: tags=[[]], channel=null, acknowledgeMode=AUTO local queue size=0
+25-11-26.03:29:26.803 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-4] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.03:29:26.804 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-4] ERROR SimpleMessageListenerContainer - Failed to check/redeclare auto-delete queue(s).
+25-11-26.03:29:26.804 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-4] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.03:29:26.845 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-3] WARN  SimpleMessageListenerContainer - Consumer raised exception, processing can restart if the connection factory supports it. Exception summary: org.springframework.amqp.AmqpConnectException: java.net.ConnectException: Connection refused (Connection refused)
+25-11-26.03:29:26.846 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-3] INFO  SimpleMessageListenerContainer - Restarting Consumer@41789dfd: tags=[[]], channel=null, acknowledgeMode=AUTO local queue size=0
+25-11-26.03:29:26.848 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-4] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.03:29:26.848 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-4] ERROR SimpleMessageListenerContainer - Failed to check/redeclare auto-delete queue(s).
+25-11-26.03:29:26.848 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-4] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.03:29:29.897 [scheduling-1    ] ERROR UpdateAwardStockJob    - 定时任务， 更新奖品消耗库存失败
+org.springframework.data.redis.RedisConnectionFailureException: Unable to write command into connection! Increase nettyThreads setting. Node source: NodeSource [slot=0, addr=null, redisClient=null, redirect=null, entry=null], connection: RedisConnection@776803351 [redisClient=[addr=redis://127.0.0.1:16379], channel=[id: 0x1a7e5045, L:0.0.0.0/0.0.0.0:56840], currentCommand=null, usage=1], command: (LPOP), params: [strategy_award_count_queue_key] after 3 retry attempts; nested exception is org.redisson.client.WriteRedisConnectionException: Unable to write command into connection! Increase nettyThreads setting. Node source: NodeSource [slot=0, addr=null, redisClient=null, redirect=null, entry=null], connection: RedisConnection@776803351 [redisClient=[addr=redis://127.0.0.1:16379], channel=[id: 0x1a7e5045, L:0.0.0.0/0.0.0.0:56840], currentCommand=null, usage=1], command: (LPOP), params: [strategy_award_count_queue_key] after 3 retry attempts
+	at org.redisson.spring.data.connection.RedissonExceptionConverter.convert(RedissonExceptionConverter.java:40)
+	at org.redisson.spring.data.connection.RedissonExceptionConverter.convert(RedissonExceptionConverter.java:35)
+	at org.springframework.data.redis.PassThroughExceptionTranslationStrategy.translate(PassThroughExceptionTranslationStrategy.java:44)
+	at org.redisson.spring.data.connection.RedissonConnectionFactory.translateExceptionIfPossible(RedissonConnectionFactory.java:91)
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:242)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:152)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:763)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:708)
+	at org.example.infrastructure.persistent.repository.StrategyRepository$$EnhancerBySpringCGLIB$$a83ef6bb.takeQueueValue(<generated>)
+	at org.example.domain.strategy.service.raffle.DefaultRaffleStrategy.takeQueueValue(DefaultRaffleStrategy.java:70)
+	at org.example.trigger.job.UpdateAwardStockJob.exec(UpdateAwardStockJob.java:26)
+	at sun.reflect.GeneratedMethodAccessor50.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:84)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:95)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: org.redisson.client.WriteRedisConnectionException: Unable to write command into connection! Increase nettyThreads setting. Node source: NodeSource [slot=0, addr=null, redisClient=null, redirect=null, entry=null], connection: RedisConnection@776803351 [redisClient=[addr=redis://127.0.0.1:16379], channel=[id: 0x1a7e5045, L:0.0.0.0/0.0.0.0:56840], currentCommand=null, usage=1], command: (LPOP), params: [strategy_award_count_queue_key] after 3 retry attempts
+	at org.redisson.command.RedisExecutor.checkWriteFuture(RedisExecutor.java:345)
+	at org.redisson.command.RedisExecutor.lambda$execute$3(RedisExecutor.java:188)
+	at io.netty.util.concurrent.DefaultPromise.notifyListener0(DefaultPromise.java:590)
+	at io.netty.util.concurrent.DefaultPromise.notifyListenersNow(DefaultPromise.java:557)
+	at io.netty.util.concurrent.DefaultPromise.notifyListeners(DefaultPromise.java:492)
+	at io.netty.util.concurrent.DefaultPromise.setValue0(DefaultPromise.java:636)
+	at io.netty.util.concurrent.DefaultPromise.setFailure0(DefaultPromise.java:629)
+	at io.netty.util.concurrent.DefaultPromise.tryFailure(DefaultPromise.java:118)
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.safeSetFailure(AbstractChannel.java:999)
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.write(AbstractChannel.java:860)
+	at io.netty.channel.DefaultChannelPipeline$HeadContext.write(DefaultChannelPipeline.java:1367)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeWrite0(AbstractChannelHandlerContext.java:877)
+	at io.netty.channel.AbstractChannelHandlerContext.invokeWriteAndFlush(AbstractChannelHandlerContext.java:940)
+	at io.netty.channel.AbstractChannelHandlerContext$WriteTask.run(AbstractChannelHandlerContext.java:1247)
+	at io.netty.util.concurrent.AbstractEventExecutor.runTask(AbstractEventExecutor.java:174)
+	at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java:167)
+	at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:470)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:569)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	... 1 common frames omitted
+Caused by: io.netty.channel.StacklessClosedChannelException: null
+	at io.netty.channel.AbstractChannel$AbstractUnsafe.write(Object, ChannelPromise)(Unknown Source)
+25-11-26.03:29:31.832 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-4] WARN  SimpleMessageListenerContainer - Consumer raised exception, processing can restart if the connection factory supports it. Exception summary: org.springframework.amqp.AmqpConnectException: java.net.ConnectException: Connection refused (Connection refused)
+25-11-26.03:29:31.833 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-4] INFO  SimpleMessageListenerContainer - Restarting Consumer@543c266e: tags=[[]], channel=null, acknowledgeMode=AUTO local queue size=0
+25-11-26.03:29:31.834 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-5] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.03:29:31.835 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-5] ERROR SimpleMessageListenerContainer - Failed to check/redeclare auto-delete queue(s).
+25-11-26.03:29:31.835 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#1-5] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.03:29:31.903 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-4] WARN  SimpleMessageListenerContainer - Consumer raised exception, processing can restart if the connection factory supports it. Exception summary: org.springframework.amqp.AmqpConnectException: java.net.ConnectException: Connection refused (Connection refused)
+25-11-26.03:29:31.904 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-4] INFO  SimpleMessageListenerContainer - Restarting Consumer@16f98c29: tags=[[]], channel=null, acknowledgeMode=AUTO local queue size=0
+25-11-26.03:29:31.905 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.03:29:31.906 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] ERROR SimpleMessageListenerContainer - Failed to check/redeclare auto-delete queue(s).
+25-11-26.03:29:31.906 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]

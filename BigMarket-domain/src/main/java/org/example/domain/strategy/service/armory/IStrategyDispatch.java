@@ -1,5 +1,7 @@
 package org.example.domain.strategy.service.armory;
 
+import java.util.Date;
+
 /**
  * @program: BigMarket
  * @description: Strategy Lottery Dispatch
@@ -15,7 +17,8 @@ public interface IStrategyDispatch {
      * 库存扣减
      * @param strategyId
      * @param awardId
+     * @param endDataTime
      * @return
      */
-    Boolean subtractionAwardStock(Long strategyId, Integer awardId);
+    Boolean subtractionAwardStock(Long strategyId, Integer awardId, Date endDataTime);
 }
