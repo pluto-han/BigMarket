@@ -351,3 +351,40 @@ Caused by: io.netty.channel.StacklessClosedChannelException: null
 25-11-26.03:29:31.905 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
 25-11-26.03:29:31.906 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] ERROR SimpleMessageListenerContainer - Failed to check/redeclare auto-delete queue(s).
 25-11-26.03:29:31.906 [org.springframework.amqp.rabbit.RabbitListenerEndpointContainer#0-5] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.21:59:57.947 [main            ] INFO  Application            - Starting Application using Java 1.8.0_472 on Pluto with PID 26497 (/home/pluto/Project/BigMarket/BigMarket-app/target/classes started by pluto in /home/pluto/Project/BigMarket)
+25-11-26.21:59:57.951 [main            ] INFO  Application            - The following 1 profile is active: "dev"
+25-11-26.21:59:59.728 [main            ] INFO  RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+25-11-26.21:59:59.732 [main            ] INFO  RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+25-11-26.21:59:59.764 [main            ] INFO  RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13 ms. Found 0 Redis repository interfaces.
+25-11-26.22:00:00.579 [main            ] INFO  TomcatWebServer        - Tomcat initialized with port(s): 8091 (http)
+25-11-26.22:00:00.586 [main            ] INFO  Http11NioProtocol      - Initializing ProtocolHandler ["http-nio-8091"]
+25-11-26.22:00:00.587 [main            ] INFO  StandardService        - Starting service [Tomcat]
+25-11-26.22:00:00.587 [main            ] INFO  StandardEngine         - Starting Servlet engine: [Apache Tomcat/9.0.75]
+25-11-26.22:00:00.657 [main            ] INFO  [/]                    - Initializing Spring embedded WebApplicationContext
+25-11-26.22:00:00.657 [main            ] INFO  ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2614 ms
+25-11-26.22:00:01.657 [main            ] INFO  Version                - Redisson 3.23.4
+25-11-26.22:00:02.027 [redisson-netty-2-4] INFO  MasterPubSubConnectionPool - 1 connections initialized for 127.0.0.1/127.0.0.1:16379
+25-11-26.22:00:02.047 [redisson-netty-2-13] INFO  MasterConnectionPool   - 5 connections initialized for 127.0.0.1/127.0.0.1:16379
+25-11-26.22:00:03.615 [main            ] INFO  EndpointLinksResolver  - Exposing 1 endpoint(s) beneath base path '/actuator'
+25-11-26.22:00:03.739 [main            ] INFO  Http11NioProtocol      - Starting ProtocolHandler ["http-nio-8091"]
+25-11-26.22:00:03.759 [main            ] INFO  TomcatWebServer        - Tomcat started on port(s): 8091 (http) with context path ''
+25-11-26.22:00:03.761 [main            ] INFO  CachingConnectionFactory - Attempting to connect to: [127.0.0.1:5672]
+25-11-26.22:00:03.989 [main            ] INFO  CachingConnectionFactory - Created new connection: rabbitConnectionFactory#7558633:0/SimpleConnection@6d617b07 [delegate=amqp://admin@127.0.0.1:5672/, localPort= 38378]
+25-11-26.22:00:04.099 [main            ] INFO  Application            - Started Application in 7.36 seconds (JVM running for 8.986)
+25-11-26.22:00:04.661 [RMI TCP Connection(5)-127.0.0.1] INFO  HikariDataSource       - Retail_HikariCP - Starting...
+25-11-26.22:00:04.663 [RMI TCP Connection(3)-127.0.0.1] INFO  [/]                    - Initializing Spring DispatcherServlet 'dispatcherServlet'
+25-11-26.22:00:04.663 [RMI TCP Connection(3)-127.0.0.1] INFO  DispatcherServlet      - Initializing Servlet 'dispatcherServlet'
+25-11-26.22:00:04.666 [RMI TCP Connection(3)-127.0.0.1] INFO  DispatcherServlet      - Completed initialization in 3 ms
+25-11-26.22:00:04.972 [RMI TCP Connection(5)-127.0.0.1] INFO  HikariDataSource       - Retail_HikariCP - Start completed.
+25-11-26.22:00:04.990 [RMI TCP Connection(5)-127.0.0.1] INFO  HikariDataSource       - Retail_HikariCP - Starting...
+25-11-26.22:00:05.010 [RMI TCP Connection(5)-127.0.0.1] INFO  HikariDataSource       - Retail_HikariCP - Start completed.
+25-11-26.22:00:34.879 [http-nio-8091-exec-3] INFO  IRaffleStrategyController - 查询抽奖奖品列表配开始 userId: null activityId:0
+25-11-26.22:00:34.879 [http-nio-8091-exec-4] INFO  IRaffleStrategyController - 查询抽奖奖品列表配开始 userId: null activityId:0
+25-11-26.22:00:34.885 [http-nio-8091-exec-4] INFO  HikariDataSource       - Retail_HikariCP - Starting...
+25-11-26.22:00:34.909 [http-nio-8091-exec-4] INFO  HikariDataSource       - Retail_HikariCP - Start completed.
+25-11-26.22:00:35.179 [http-nio-8091-exec-3] INFO  IRaffleStrategyController - 查询抽奖奖品列表配置完成 userId: null activityId: 0 response: {"code":"0000","data":[],"info":"成功"}
+25-11-26.22:00:35.179 [http-nio-8091-exec-4] INFO  IRaffleStrategyController - 查询抽奖奖品列表配置完成 userId: null activityId: 0 response: {"code":"0000","data":[],"info":"成功"}
+25-11-26.22:00:47.777 [http-nio-8091-exec-6] INFO  IRaffleStrategyController - 查询抽奖奖品列表配开始 userId: xiaofuge activityId:100301
+25-11-26.22:00:47.777 [http-nio-8091-exec-5] INFO  IRaffleStrategyController - 查询抽奖奖品列表配开始 userId: xiaofuge activityId:100301
+25-11-26.22:00:47.834 [http-nio-8091-exec-6] INFO  IRaffleStrategyController - 查询抽奖奖品列表配置完成 userId: xiaofuge activityId: 100301 response: {"code":"0000","data":[{"awardId":101,"awardTitle":"随机积分","isAwardUnlock":true,"sort":1,"waitUnlockCount":0},{"awardId":102,"awardTitle":"OpenAI会员卡","isAwardUnlock":true,"sort":2,"waitUnlockCount":0},{"awardId":103,"awardTitle":"支付优惠券","isAwardUnlock":true,"sort":3,"waitUnlockCount":0},{"awardId":104,"awardTitle":"小米台灯","isAwardUnlock":true,"sort":4,"waitUnlockCount":0},{"awardId":105,"awardRuleLockCount":3,"awardSubtitle":"抽奖3次后解锁","awardTitle":"小米su7周体验","isAwardUnlock":false,"sort":5,"waitUnlockCount":3},{"awardId":106,"awardRuleLockCount":2,"awardSubtitle":"抽奖2次后解锁","awardTitle":"轻奢办公椅","isAwardUnlock":false,"sort":6,"waitUnlockCount":2},{"awardId":107,"awardRuleLockCount":1,"awardSubtitle":"抽奖1次后解锁","awardTitle":"小霸王游戏机","isAwardUnlock":false,"sort":7,"waitUnlockCount":1},{"awardId":108,"awardTitle":"暴走玩偶","isAwardUnlock":true,"sort":8,"waitUnlockCount":0}],"info":"成功"}
+25-11-26.22:00:47.834 [http-nio-8091-exec-5] INFO  IRaffleStrategyController - 查询抽奖奖品列表配置完成 userId: xiaofuge activityId: 100301 response: {"code":"0000","data":[{"awardId":101,"awardTitle":"随机积分","isAwardUnlock":true,"sort":1,"waitUnlockCount":0},{"awardId":102,"awardTitle":"OpenAI会员卡","isAwardUnlock":true,"sort":2,"waitUnlockCount":0},{"awardId":103,"awardTitle":"支付优惠券","isAwardUnlock":true,"sort":3,"waitUnlockCount":0},{"awardId":104,"awardTitle":"小米台灯","isAwardUnlock":true,"sort":4,"waitUnlockCount":0},{"awardId":105,"awardRuleLockCount":3,"awardSubtitle":"抽奖3次后解锁","awardTitle":"小米su7周体验","isAwardUnlock":false,"sort":5,"waitUnlockCount":3},{"awardId":106,"awardRuleLockCount":2,"awardSubtitle":"抽奖2次后解锁","awardTitle":"轻奢办公椅","isAwardUnlock":false,"sort":6,"waitUnlockCount":2},{"awardId":107,"awardRuleLockCount":1,"awardSubtitle":"抽奖1次后解锁","awardTitle":"小霸王游戏机","isAwardUnlock":false,"sort":7,"waitUnlockCount":1},{"awardId":108,"awardTitle":"暴走玩偶","isAwardUnlock":true,"sort":8,"waitUnlockCount":0}],"info":"成功"}
