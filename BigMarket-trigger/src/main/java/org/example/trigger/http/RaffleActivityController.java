@@ -148,7 +148,7 @@ public class RaffleActivityController implements IRaffleActivityService {
 
     @RequestMapping(value = "calendar_check_in_rebate", method = RequestMethod.POST)
     @Override
-    public Response<Boolean> calendarCheckInRebate(String userId) {
+    public Response<Boolean> calendarCheckInRebate(@RequestParam String userId) {
         try {
             log.info("用户签到，返利开始 userId:{}", userId);
             BehaviorEntity behaviorEntity = new BehaviorEntity();
@@ -181,7 +181,7 @@ public class RaffleActivityController implements IRaffleActivityService {
 
     @RequestMapping(value = "is_check_in_and_rebate", method = RequestMethod.POST)
     @Override
-    public Response<Boolean> isCheckInAndRebate(String userId) {
+    public Response<Boolean> isCheckInAndRebate(@RequestParam String userId) {
         try {
             log.info("查询用户是否完成签到返利，开始 userId:{}", userId);
             String outBusinessId = dataFormatDay.format(new Date());

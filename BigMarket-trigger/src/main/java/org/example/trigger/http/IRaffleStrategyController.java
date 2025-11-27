@@ -107,7 +107,7 @@ public class IRaffleStrategyController implements IRaffleStrategyService {
                         .awardSubtitle(strategyAward.getAwardSubtitle())
                         .sort(strategyAward.getSort())
                         .awardRuleLockCount(awardRuleLockCount)
-                        .isAwardUnlock(null == awardRuleLockCount || dayCount > awardRuleLockCount)
+                        .isAwardUnlock(null == awardRuleLockCount || dayCount >= awardRuleLockCount)
                         .waitUnlockCount(null == awardRuleLockCount || awardRuleLockCount <= dayCount ? 0 : (awardRuleLockCount - dayCount))
                         .build());
             }
