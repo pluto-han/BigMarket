@@ -1,5 +1,6 @@
 package org.example.trigger.http;
 
+import com.alibaba.fastjson2.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.example.domain.activity.model.entity.UserRaffleOrderEntity;
@@ -9,6 +10,10 @@ import org.example.domain.award.model.aggregate.UserAwardRecordAggregate;
 import org.example.domain.award.model.entity.UserAwardRecordEntity;
 import org.example.domain.award.model.valobj.AwardStateVO;
 import org.example.domain.award.service.IAwardService;
+import org.example.domain.rebate.model.entity.BehaviorEntity;
+import org.example.domain.rebate.model.valobj.BehaviorTypeVO;
+import org.example.domain.rebate.service.BehaviorRebateService;
+import org.example.domain.rebate.service.IBehaviorRebateService;
 import org.example.domain.strategy.model.entity.RaffleAwardEntity;
 import org.example.domain.strategy.model.entity.RaffleFactorEntity;
 import org.example.domain.strategy.service.IRaffleAward;
@@ -24,6 +29,7 @@ import org.example.types.model.Response;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -32,6 +38,7 @@ import java.util.List;
 @CrossOrigin("${app.config.cross-origin}")
 @RequestMapping("/api/${app.config.api-version}/raffle/activity/")
 public class RaffleActivityController implements IRaffleActivityService {
+    private final SimpleDateFormat dataFormatDay = new SimpleDateFormat("yyyyMMdd");
 
     @Resource
     private IRaffleActivityPartakeService raffleActivityPartakeService;
@@ -43,7 +50,8 @@ public class RaffleActivityController implements IRaffleActivityService {
     private IActivityArmory activityArmory;
     @Resource
     private IStrategyArmory strategyArmory;
-
+    @Resource
+    private IBehaviorRebateService behaviorRebateService;
 
     @RequestMapping(value = "armory", method = RequestMethod.GET)
     @Override
@@ -133,5 +141,39 @@ public class RaffleActivityController implements IRaffleActivityService {
                     .info(ResponseCode.UN_ERROR.getInfo())
                     .build();
         }
+    }
+
+    @RequestMapping(value = "calendar_check_in_rebate", method = RequestMethod.POST)
+    @Override
+    public Response<Boolean> calendarCheckInRebate(String userId) {
+        try {
+            log.info("用户签到，返利开始 userId:{}", userId);
+            BehaviorEntity behaviorEntity = new BehaviorEntity();
+            behaviorEntity.setUserId(userId);
+            behaviorEntity.setBehaviorType(BehaviorTypeVO.CHECK_IN);
+            behaviorEntity.setOutBusinessId(dataFormatDay.format(new Date()));
+
+            List<String> orderIds = behaviorRebateService.createRebateOrder(behaviorEntity);
+            log.info("用户签到，返利完成 userId:{} orderIds:{}", userId, JSON.toJSONString(orderIds));
+            return Response.<Boolean>builder()
+                    .code(ResponseCode.SUCCESS.getCode())
+                    .info(ResponseCode.SUCCESS.getInfo())
+                    .data(true)
+                    .build();
+        } catch (AppException e) {
+            log.info("签到返利异常 userId:{}", userId, e);
+            return Response.<Boolean>builder()
+                    .code(e.getCode())
+                    .info(e.getInfo())
+                    .build();
+        } catch (Exception e) {
+            log.info("签到返利失败 userId:{}", userId, e);
+            return Response.<Boolean>builder()
+                    .code(ResponseCode.UN_ERROR.getCode())
+                    .info(ResponseCode.UN_ERROR.getInfo())
+                    .build();
+        }
+
+
     }
 }

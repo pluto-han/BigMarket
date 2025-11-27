@@ -19,5 +19,10 @@ public interface IRaffleActivityService {
      */
     Response<ActivityDrawResponseDTO> draw(ActivityDrawRequestDTO request);
 
-
+    /**
+     * 日历签到返利
+     * @param userId 用户ID
+     * @return 返利结果
+     */
+    Response<Boolean> calendarCheckInRebate(String userId);
 }
