@@ -2,6 +2,8 @@ package org.example.trigger.api;
 
 import org.example.trigger.api.dto.ActivityDrawRequestDTO;
 import org.example.trigger.api.dto.ActivityDrawResponseDTO;
+import org.example.trigger.api.dto.UserActivityAccountRequestDTO;
+import org.example.trigger.api.dto.UserActivityAccountResponseDTO;
 import org.example.types.model.Response;
 
 public interface IRaffleActivityService {
@@ -32,4 +34,6 @@ public interface IRaffleActivityService {
      * @return 检查结果
      */
     Response<Boolean> isCheckInAndRebate(String userId);
+
+    Response<UserActivityAccountResponseDTO> queryUserActivityAccount(UserActivityAccountRequestDTO request);
 }

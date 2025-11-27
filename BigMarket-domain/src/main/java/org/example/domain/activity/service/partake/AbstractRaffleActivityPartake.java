@@ -56,7 +56,7 @@ public abstract class AbstractRaffleActivityPartake implements IRaffleActivityPa
         // 3. 查询未被使用的活动参与订单
         UserRaffleOrderEntity userRaffleOrderEntity = activityRepository.queryNoUsedRaffleOrder(partakeRaffleActivityEntity);
         if (null != userRaffleOrderEntity) {
-            log.info("创建参与活动订单【已存在未消费】 userId:{} activityId:{} userRaffleOrderEntity", userId, activityId, userRaffleOrderEntity);
+            log.info("创建参与活动订单【已存在未消费】 userId:{} activityId:{} userRaffleOrderEntity:{}", userId, activityId, userRaffleOrderEntity);
             return userRaffleOrderEntity;
         }
 
