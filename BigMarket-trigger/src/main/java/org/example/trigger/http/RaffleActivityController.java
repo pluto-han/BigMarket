@@ -11,6 +11,7 @@ import org.example.domain.award.model.entity.UserAwardRecordEntity;
 import org.example.domain.award.model.valobj.AwardStateVO;
 import org.example.domain.award.service.IAwardService;
 import org.example.domain.rebate.model.entity.BehaviorEntity;
+import org.example.domain.rebate.model.entity.BehaviorRebateOrderEntity;
 import org.example.domain.rebate.model.valobj.BehaviorTypeVO;
 import org.example.domain.rebate.service.BehaviorRebateService;
 import org.example.domain.rebate.service.IBehaviorRebateService;
@@ -152,7 +153,6 @@ public class RaffleActivityController implements IRaffleActivityService {
             behaviorEntity.setUserId(userId);
             behaviorEntity.setBehaviorType(BehaviorTypeVO.CHECK_IN);
             behaviorEntity.setOutBusinessId(dataFormatDay.format(new Date()));
-
             List<String> orderIds = behaviorRebateService.createRebateOrder(behaviorEntity);
             log.info("用户签到，返利完成 userId:{} orderIds:{}", userId, JSON.toJSONString(orderIds));
             return Response.<Boolean>builder()
@@ -175,5 +175,28 @@ public class RaffleActivityController implements IRaffleActivityService {
         }
 
 
+    }
+
+    @RequestMapping(value = "is_check_in_and_rebate", method = RequestMethod.POST)
+    @Override
+    public Response<Boolean> isCheckInAndRebate(String userId) {
+        try {
+            log.info("查询用户是否完成签到返利，开始 userId:{}", userId);
+            String outBusinessId = dataFormatDay.format(new Date());
+            List<BehaviorRebateOrderEntity> behaviorRebateOrderEntities = behaviorRebateService.queryOrderByOutBusinessNo(userId, outBusinessId);
+            log.info("查询用户是否完成签到返利，完成 userId:{} orders:{}", userId, JSON.toJSONString(behaviorRebateOrderEntities));
+            return Response.<Boolean>builder()
+                    .code(ResponseCode.SUCCESS.getCode())
+                    .info(ResponseCode.SUCCESS.getInfo())
+                    .data(!behaviorRebateOrderEntities.isEmpty())
+                    .build();
+        } catch (Exception e) {
+            log.error("查询用户是否完成签到返利，失败 userId:{}", userId, e);
+            return Response.<Boolean>builder()
+                    .code(ResponseCode.UN_ERROR.getCode())
+                    .info(ResponseCode.UN_ERROR.getInfo())
+                    .data(false)
+                    .build();
+        }
     }
 }

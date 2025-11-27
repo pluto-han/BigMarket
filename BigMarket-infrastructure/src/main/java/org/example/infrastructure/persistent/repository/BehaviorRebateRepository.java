@@ -3,6 +3,7 @@ package org.example.infrastructure.persistent.repository;
 import cn.bugstack.middleware.db.router.strategy.IDBRouterStrategy;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.example.domain.award.model.entity.UserAwardRecordEntity;
 import org.example.domain.rebate.model.aggregate.BehaviorRebateAggregate;
 import org.example.domain.rebate.model.entity.BehaviorRebateOrderEntity;
 import org.example.domain.rebate.model.entity.TaskEntity;
@@ -79,6 +80,7 @@ public class BehaviorRebateRepository implements IBehaviorRebateRepository {
                         userBehaviorRebateOrder.setRebateDesc(behaviorRebateOrderEntity.getRebateDesc());
                         userBehaviorRebateOrder.setRebateType(behaviorRebateOrderEntity.getRebateType());
                         userBehaviorRebateOrder.setRebateConfig(behaviorRebateOrderEntity.getRebateConfig());
+                        userBehaviorRebateOrder.setOutBusinessNo(behaviorRebateOrderEntity.getOutBusinessNo());
                         userBehaviorRebateOrder.setBizId(behaviorRebateOrderEntity.getBizId());
                         userBehaviorRebateOrderDao.insert(userBehaviorRebateOrder);
 
@@ -119,5 +121,31 @@ public class BehaviorRebateRepository implements IBehaviorRebateRepository {
                 taskDao.updateTaskSendMessageFail(task);
             }
         }
+    }
+
+    @Override
+    public List<BehaviorRebateOrderEntity> queryOrderByOutBusinessNo(String userId, String outBusinessNo) {
+        // 1. 构建数据库请求对象
+        UserBehaviorRebateOrder userBehaviorRebateOrderReq = new UserBehaviorRebateOrder();
+        userBehaviorRebateOrderReq.setUserId(userId);
+        userBehaviorRebateOrderReq.setOutBusinessNo(outBusinessNo);
+        // 2. 查询数据库
+        List<UserBehaviorRebateOrder> userBehaviorRebateOrderResList = userBehaviorRebateOrderDao.queryOrderByOutBusinessNo(userBehaviorRebateOrderReq);
+        // 2.1 转成entity
+        List<BehaviorRebateOrderEntity> behaviorRebateOrderEntities = new ArrayList<>();
+        for (UserBehaviorRebateOrder userBehaviorRebateOrder : userBehaviorRebateOrderResList) {
+            BehaviorRebateOrderEntity behaviorRebateOrderEntity = BehaviorRebateOrderEntity.builder()
+                    .userId(userBehaviorRebateOrder.getUserId())
+                    .orderId(userBehaviorRebateOrder.getOrderId())
+                    .behaviorType(userBehaviorRebateOrder.getBehaviorType())
+                    .rebateDesc(userBehaviorRebateOrder.getRebateDesc())
+                    .rebateType(userBehaviorRebateOrder.getRebateType())
+                    .rebateConfig(userBehaviorRebateOrder.getRebateConfig())
+                    .outBusinessNo(userBehaviorRebateOrder.getOutBusinessNo())
+                    .bizId(userBehaviorRebateOrder.getBizId())
+                    .build();
+            behaviorRebateOrderEntities.add(behaviorRebateOrderEntity);
+        }
+        return behaviorRebateOrderEntities;
     }
 }

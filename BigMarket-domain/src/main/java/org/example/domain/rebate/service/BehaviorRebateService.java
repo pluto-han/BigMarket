@@ -38,7 +38,7 @@ public class BehaviorRebateService implements IBehaviorRebateService {
     @Override
     public List<String> createRebateOrder(BehaviorEntity behaviorEntity) {
         // 1. 查询返利配置
-        List<DailyBehaviorRebateVO> dailyBehaviorRebateVOS =  behaviorRebateRepository.queryDailyBehaviorRebateConfig(behaviorEntity.getBehaviorType());
+        List<DailyBehaviorRebateVO> dailyBehaviorRebateVOS = behaviorRebateRepository.queryDailyBehaviorRebateConfig(behaviorEntity.getBehaviorType());
         if (null == dailyBehaviorRebateVOS || dailyBehaviorRebateVOS.isEmpty()) {
             return new ArrayList<>();
         }
@@ -50,14 +50,15 @@ public class BehaviorRebateService implements IBehaviorRebateService {
             // 拼接业务id： 用户id_返利类型_幂等id
             String bizId = behaviorEntity.getUserId() + Constants.UNDERLINE + dailyBehaviorRebateVO.getRebateType() + Constants.UNDERLINE + behaviorEntity.getOutBusinessId();
             BehaviorRebateOrderEntity behaviorRebateOrderEntity = BehaviorRebateOrderEntity.builder()
-                        .userId(behaviorEntity.getUserId())
-                        .orderId(RandomStringUtils.randomNumeric(12))
-                        .behaviorType(dailyBehaviorRebateVO.getBehaviorType())
-                        .rebateDesc(dailyBehaviorRebateVO.getRebateDesc())
-                        .rebateType(dailyBehaviorRebateVO.getRebateType())
-                        .rebateConfig(dailyBehaviorRebateVO.getRebateConfig())
-                        .bizId(bizId)
-                        .build();
+                    .userId(behaviorEntity.getUserId())
+                    .orderId(RandomStringUtils.randomNumeric(12))
+                    .behaviorType(dailyBehaviorRebateVO.getBehaviorType())
+                    .rebateDesc(dailyBehaviorRebateVO.getRebateDesc())
+                    .rebateType(dailyBehaviorRebateVO.getRebateType())
+                    .rebateConfig(dailyBehaviorRebateVO.getRebateConfig())
+                    .outBusinessNo(behaviorEntity.getOutBusinessId())
+                    .bizId(bizId)
+                    .build();
 
             orderIds.add(behaviorRebateOrderEntity.getOrderId());
 
@@ -96,5 +97,10 @@ public class BehaviorRebateService implements IBehaviorRebateService {
 
         // 4. 返回订单id集合
         return orderIds;
+    }
+
+    @Override
+    public List<BehaviorRebateOrderEntity> queryOrderByOutBusinessNo(String userId, String outBusinessNo) {
+            return behaviorRebateRepository.queryOrderByOutBusinessNo(userId, outBusinessNo);
     }
 }

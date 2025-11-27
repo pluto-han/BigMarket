@@ -25,4 +25,11 @@ public interface IRaffleActivityService {
      * @return 返利结果
      */
     Response<Boolean> calendarCheckInRebate(String userId);
+
+    /**
+     * 检查用户是否签到并返利
+     * @param userId 用户ID
+     * @return 检查结果
+     */
+    Response<Boolean> isCheckInAndRebate(String userId);
 }

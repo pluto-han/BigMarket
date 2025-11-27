@@ -39,6 +39,8 @@ public class UserBehaviorRebateOrder {
      * 返利配置【sku值，积分值】
      */
     private String rebateConfig;
+
+    private String outBusinessNo;
     /**
      * 业务ID - 拼接的唯一值
      */
