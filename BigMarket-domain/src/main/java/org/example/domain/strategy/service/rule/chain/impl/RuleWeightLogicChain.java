@@ -26,7 +26,8 @@ public class RuleWeightLogicChain extends AbstractLogicChain {
     @Resource
     private IStrategyDispatch strategyDispatch;
 
-    private Long userScore = 0L;
+//    private Long userScore = 0L;
+
 
     /**
      * 权重责任链过滤；
@@ -62,6 +63,7 @@ public class RuleWeightLogicChain extends AbstractLogicChain {
          *      .max(Comparator.naturalOrder())
          *      .orElse(null);
          */
+        Integer userScore = strategyRepository.queryActivityAccountTotalUseCount(userId, strategyId);
         Long nextValue = analyticalSortedKeys.stream()
                 .sorted(Comparator.reverseOrder())
                 .filter(analyticalSortedKeyValue -> userScore >= analyticalSortedKeyValue)

@@ -1,10 +1,7 @@
 package org.example.domain.strategy.service.raffle;
 
 import org.example.domain.strategy.model.entity.*;
-import org.example.domain.strategy.model.valobj.RuleLogicCheckTypeVO;
-import org.example.domain.strategy.model.valobj.RuleTreeVO;
-import org.example.domain.strategy.model.valobj.StrategyAwardRuleModelVO;
-import org.example.domain.strategy.model.valobj.StrategyAwardStockKeyVO;
+import org.example.domain.strategy.model.valobj.*;
 import org.example.domain.strategy.repository.IStrategyRepository;
 import org.example.domain.strategy.service.AbstractRaffleStrategy;
 import org.example.domain.strategy.service.IRaffleAward;
@@ -89,5 +86,16 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy implements IRa
     @Override
     public Map<String, Integer> queryAwardRuleLockCount(String[] treeIds) {
         return strategyRepository.queryAwardRuleLockCount(treeIds);
+    }
+
+    @Override
+    public List<RuleWeightVO> queryAwardRuleWeight(Long strategyId) {
+        return strategyRepository.queryAwardRuleWeight(strategyId);
+    }
+
+    @Override
+    public List<RuleWeightVO> queryAwardRuleWeightByActivityId(Long activityId) {
+        Long strategyId = strategyRepository.queryStrategyIdByActivityId(activityId);
+        return queryAwardRuleWeight(strategyId);
     }
 }

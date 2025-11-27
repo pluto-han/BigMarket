@@ -6,6 +6,7 @@ import org.example.domain.strategy.model.entity.StrategyEntity;
 import org.example.domain.strategy.model.entity.StrategyRuleEntity;
 import org.example.domain.strategy.model.valobj.*;
 import org.example.domain.strategy.repository.IStrategyRepository;
+import org.example.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
 import org.example.infrastructure.persistent.dao.*;
 import org.example.infrastructure.persistent.po.*;
 import org.example.infrastructure.persistent.redis.IRedisService;
@@ -33,6 +34,9 @@ import static org.example.types.enums.ResponseCode.UN_ASSEMBLED_STRATEGY_ARMORY;
 @Repository
 public class StrategyRepository implements IStrategyRepository {
     @Resource
+    private IRaffleActivityAccountDao raffleActivityAccountDao;
+
+    @Resource
     private IRaffleActivityDao raffleActivityDao;
 
     @Resource
@@ -58,6 +62,7 @@ public class StrategyRepository implements IStrategyRepository {
 
     @Resource
     private IRaffleActivityAccountDayDao raffleActivityAccountDayDao;
+
     /**
      * return Award List under given strategy
      *
@@ -80,17 +85,7 @@ public class StrategyRepository implements IStrategyRepository {
         // StrategyAward is PO, should be changed to Entity
         strategyAwardEntities = new ArrayList<>(strategyAwards.size());
         for (StrategyAward strategyAward : strategyAwards) {
-            StrategyAwardEntity strategyAwardEntity = StrategyAwardEntity.builder()
-                    .strategyId(strategyAward.getStrategyId())
-                    .awardId(strategyAward.getAwardId())
-                    .awardTitle(strategyAward.getAwardTitle())
-                    .awardSubtitle(strategyAward.getAwardSubtitle())
-                    .awardCount(strategyAward.getAwardCount())
-                    .awardCountSurplus(strategyAward.getAwardCountSurplus())
-                    .awardRate(strategyAward.getAwardRate())
-                    .sort(strategyAward.getSort())
-                    .ruleModels(strategyAward.getRuleModels())
-                    .build();
+            StrategyAwardEntity strategyAwardEntity = StrategyAwardEntity.builder().strategyId(strategyAward.getStrategyId()).awardId(strategyAward.getAwardId()).awardTitle(strategyAward.getAwardTitle()).awardSubtitle(strategyAward.getAwardSubtitle()).awardCount(strategyAward.getAwardCount()).awardCountSurplus(strategyAward.getAwardCountSurplus()).awardRate(strategyAward.getAwardRate()).sort(strategyAward.getSort()).ruleModels(strategyAward.getRuleModels()).build();
 
             strategyAwardEntities.add(strategyAwardEntity);
         }
@@ -148,11 +143,7 @@ public class StrategyRepository implements IStrategyRepository {
         }
         // then, try DB
         Strategy strategy = strategyDao.queryStrategyByStrategyId(strategyId);
-        strategyEntity = StrategyEntity.builder()
-                .strategyId(strategy.getStrategyId())
-                .strategyDesc(strategy.getStrategyDesc())
-                .ruleModels(strategy.getRuleModels())
-                .build();
+        strategyEntity = StrategyEntity.builder().strategyId(strategy.getStrategyId()).strategyDesc(strategy.getStrategyDesc()).ruleModels(strategy.getRuleModels()).build();
         redisService.setValue(cacheKey, strategyEntity);
         return strategyEntity;
     }
@@ -163,14 +154,7 @@ public class StrategyRepository implements IStrategyRepository {
         strategyRuleReq.setStrategyId(strategyId);
         strategyRuleReq.setRuleModel(ruleModel);
         StrategyRule strategyRules = strategyRuleDao.queryStrategyRule(strategyRuleReq);
-        return StrategyRuleEntity.builder()
-                .strategyId(strategyRules.getStrategyId())
-                .awardId(strategyRules.getAwardId())
-                .ruleType(strategyRules.getRuleType())
-                .ruleModel(strategyRules.getRuleModel())
-                .ruleValue(strategyRules.getRuleValue())
-                .ruleDesc(strategyRules.getRuleDesc())
-                .build();
+        return StrategyRuleEntity.builder().strategyId(strategyRules.getStrategyId()).awardId(strategyRules.getAwardId()).ruleType(strategyRules.getRuleType()).ruleModel(strategyRules.getRuleModel()).ruleValue(strategyRules.getRuleValue()).ruleDesc(strategyRules.getRuleDesc()).build();
 
 
     }
@@ -195,9 +179,7 @@ public class StrategyRepository implements IStrategyRepository {
         strategyAward.setStrategyId(strategyId);
         strategyAward.setAwardId(awardId);
         String ruleModels = strategyAwardDao.queryStrategyAwardRuleModels(strategyAward);
-        return StrategyAwardRuleModelVO.builder()
-                .ruleModels(ruleModels)
-                .build();
+        return StrategyAwardRuleModelVO.builder().ruleModels(ruleModels).build();
     }
 
     @Override
@@ -213,13 +195,7 @@ public class StrategyRepository implements IStrategyRepository {
         // 1. tree node line 转换Map结构
         Map<String, List<RuleTreeNodeLineVO>> ruleTreeNodeLineMap = new HashMap<>();
         for (RuleTreeNodeLine ruleTreeNodeLine : ruleTreeNodeLines) {
-            RuleTreeNodeLineVO ruleTreeNodeLineVO = RuleTreeNodeLineVO.builder()
-                    .treeId(ruleTreeNodeLine.getTreeId())
-                    .ruleNodeFrom(ruleTreeNodeLine.getRuleNodeFrom())
-                    .ruleNodeTo(ruleTreeNodeLine.getRuleNodeTo())
-                    .ruleLimitType(RuleLimitTypeVO.valueOf(ruleTreeNodeLine.getRuleLimitType()))
-                    .ruleLimitValue(RuleLogicCheckTypeVO.valueOf(ruleTreeNodeLine.getRuleLimitValue()))
-                    .build();
+            RuleTreeNodeLineVO ruleTreeNodeLineVO = RuleTreeNodeLineVO.builder().treeId(ruleTreeNodeLine.getTreeId()).ruleNodeFrom(ruleTreeNodeLine.getRuleNodeFrom()).ruleNodeTo(ruleTreeNodeLine.getRuleNodeTo()).ruleLimitType(RuleLimitTypeVO.valueOf(ruleTreeNodeLine.getRuleLimitType())).ruleLimitValue(RuleLogicCheckTypeVO.valueOf(ruleTreeNodeLine.getRuleLimitValue())).build();
 
             List<RuleTreeNodeLineVO> ruleTreeNodeLineVOList = ruleTreeNodeLineMap.computeIfAbsent(ruleTreeNodeLine.getRuleNodeFrom(), k -> new ArrayList<>());
             ruleTreeNodeLineVOList.add(ruleTreeNodeLineVO);
@@ -228,24 +204,12 @@ public class StrategyRepository implements IStrategyRepository {
         // 2. tree node 转换为Map结构
         Map<String, RuleTreeNodeVO> treeNodeMap = new HashMap<>();
         for (RuleTreeNode ruleTreeNode : ruleTreeNodes) {
-            RuleTreeNodeVO ruleTreeNodeVO = RuleTreeNodeVO.builder()
-                    .treeId(ruleTreeNode.getTreeId())
-                    .ruleKey(ruleTreeNode.getRuleKey())
-                    .ruleDesc(ruleTreeNode.getRuleDesc())
-                    .ruleValue(ruleTreeNode.getRuleValue())
-                    .treeNodeLineVOList(ruleTreeNodeLineMap.get(ruleTreeNode.getRuleKey()))
-                    .build();
+            RuleTreeNodeVO ruleTreeNodeVO = RuleTreeNodeVO.builder().treeId(ruleTreeNode.getTreeId()).ruleKey(ruleTreeNode.getRuleKey()).ruleDesc(ruleTreeNode.getRuleDesc()).ruleValue(ruleTreeNode.getRuleValue()).treeNodeLineVOList(ruleTreeNodeLineMap.get(ruleTreeNode.getRuleKey())).build();
             treeNodeMap.put(ruleTreeNode.getRuleKey(), ruleTreeNodeVO);
         }
 
         // 3. 构建 Rule Tree
-        RuleTreeVO ruleTreeVODB = RuleTreeVO.builder()
-                .treeId(ruleTree.getTreeId())
-                .treeName(ruleTree.getTreeName())
-                .treeDesc(ruleTree.getTreeDesc())
-                .treeRootRuleNode(ruleTree.getTreeRootRuleKey())
-                .treeNodeMap(treeNodeMap)
-                .build();
+        RuleTreeVO ruleTreeVODB = RuleTreeVO.builder().treeId(ruleTree.getTreeId()).treeName(ruleTree.getTreeName()).treeDesc(ruleTree.getTreeDesc()).treeRootRuleNode(ruleTree.getTreeRootRuleKey()).treeNodeMap(treeNodeMap).build();
 
         redisService.setValue(cacheKey, ruleTreeVODB);
         return ruleTreeVODB;
@@ -277,7 +241,7 @@ public class StrategyRepository implements IStrategyRepository {
         Boolean lock = false;
         if (null != endDateTime) {
             long expireMillis = endDateTime.getTime() - System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1);
-            lock =  redisService.setNx(lockKey, expireMillis, TimeUnit.MILLISECONDS);
+            lock = redisService.setNx(lockKey, expireMillis, TimeUnit.MILLISECONDS);
         } else {
             lock = redisService.setNx(lockKey);
         }
@@ -326,16 +290,7 @@ public class StrategyRepository implements IStrategyRepository {
         strategyAwardReq.setAwardId(awardId);
         StrategyAward strategyAwardReqs = strategyAwardDao.queryStrategyAward(strategyAwardReq);
 
-        strategyAwardEntity = StrategyAwardEntity.builder()
-                .strategyId(strategyAwardReqs.getStrategyId())
-                .awardId(strategyAwardReqs.getAwardId())
-                .awardTitle(strategyAwardReqs.getAwardTitle())
-                .awardSubtitle(strategyAwardReqs.getAwardSubtitle())
-                .awardCount(strategyAwardReqs.getAwardCount())
-                .awardCountSurplus(strategyAwardReqs.getAwardCountSurplus())
-                .awardRate(strategyAwardReqs.getAwardRate())
-                .sort(strategyAwardReqs.getSort())
-                .build();
+        strategyAwardEntity = StrategyAwardEntity.builder().strategyId(strategyAwardReqs.getStrategyId()).awardId(strategyAwardReqs.getAwardId()).awardTitle(strategyAwardReqs.getAwardTitle()).awardSubtitle(strategyAwardReqs.getAwardSubtitle()).awardCount(strategyAwardReqs.getAwardCount()).awardCountSurplus(strategyAwardReqs.getAwardCountSurplus()).awardRate(strategyAwardReqs.getAwardRate()).sort(strategyAwardReqs.getSort()).build();
 
         redisService.setValue(cacheKey, strategyAwardEntity);
 
@@ -379,5 +334,68 @@ public class StrategyRepository implements IStrategyRepository {
         }
 
         return resultMap;
+    }
+
+    @Override
+    public Integer queryActivityAccountTotalUseCount(String userId, Long strategyId) {
+        Long activityId = raffleActivityDao.queryActivityIdByStrategyId(strategyId);
+        RaffleActivityAccount raffleActivityAccount = raffleActivityAccountDao.queryActivityAccountByUserId(RaffleActivityAccount.builder()
+                .userId(userId)
+                .activityId(activityId)
+                .build());
+
+        return raffleActivityAccount.getTotalCount() - raffleActivityAccount.getTotalCountSurplus();
+    }
+
+    @Override
+    public List<RuleWeightVO> queryAwardRuleWeight(Long strategyId) {
+        String cacheKey = Constants.RedisKey.STRATEGY_RULE_WEIGHT_KEY + strategyId;
+        List<RuleWeightVO> ruleWeightVOS = redisService.getValue(cacheKey);
+        if (null != ruleWeightVOS) {
+            return ruleWeightVOS;
+        }
+
+        ruleWeightVOS = new ArrayList<>();
+
+        // 1. 查询权重规则配置
+        StrategyRule strategyRuleReq = new StrategyRule();
+        strategyRuleReq.setStrategyId(strategyId);
+        strategyRuleReq.setRuleModel(DefaultChainFactory.LogicModel.RULE_WEIGHT.getCode());
+        String ruleValue = strategyRuleDao.queryStrategyRuleValue(strategyRuleReq);
+        // 2. 借助实体对象转换规则
+        StrategyRuleEntity strategyRuleEntity = new StrategyRuleEntity();
+        strategyRuleEntity.setRuleModel(DefaultChainFactory.LogicModel.RULE_WEIGHT.getCode());
+        strategyRuleEntity.setRuleValue(ruleValue);
+        Map<String, List<Integer>> ruleWeightValues = strategyRuleEntity.getRuleWeightValues();
+        // 3. 遍历规则组装奖品配置
+        Set<String> ruleWeightKeys = ruleWeightValues.keySet();
+        for (String ruleWeightKey : ruleWeightKeys) {
+            List<Integer> awardIds = ruleWeightValues.get(ruleWeightKey);
+            List<RuleWeightVO.Award> awardList = new ArrayList<>();
+            // 也可以修改为一次从数据库查询
+            for (Integer awardId : awardIds) {
+                StrategyAward strategyAwardReq = new StrategyAward();
+                strategyAwardReq.setStrategyId(strategyId);
+                strategyAwardReq.setAwardId(awardId);
+                StrategyAward strategyAward = strategyAwardDao.queryStrategyAward(strategyAwardReq);
+                awardList.add(RuleWeightVO.Award.builder()
+                        .awardId(strategyAward.getAwardId())
+                        .awardTitle(strategyAward.getAwardTitle())
+                        .build());
+            }
+
+            ruleWeightVOS.add(RuleWeightVO.builder()
+                    .ruleValue(ruleValue)
+                    .weight(Integer.valueOf(ruleWeightKey.split(Constants.COLON)[0]))
+                    .awardIds(awardIds)
+                    .awardList(awardList)
+                    .build());
+        }
+
+        // 设置缓存 - 实际场景中，这类数据，可以在活动下架的时候统一清空缓存。
+        redisService.setValue(cacheKey, ruleWeightVOS);
+
+        return ruleWeightVOS;
+
     }
 }
