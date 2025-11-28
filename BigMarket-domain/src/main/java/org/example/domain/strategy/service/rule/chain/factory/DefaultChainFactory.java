@@ -29,13 +29,13 @@ public class DefaultChainFactory {
         StrategyEntity strategyEntity = strategyRepository.queryStrategyEntityByStrategyId(strategyId);
         String[] ruleModels = strategyEntity.getRuleModels();
 
-        if(ruleModels == null || ruleModels.length == 0){
+        if (ruleModels == null || ruleModels.length == 0) {
             return logicChainGroup.get("default");
         }
 
         ILogicChain logicChain = logicChainGroup.get(ruleModels[0]);
         ILogicChain current = logicChain;
-        for (int i = 1; i < ruleModels.length; i++){
+        for (int i = 1; i < ruleModels.length; i++) {
             ILogicChain next = logicChainGroup.get(ruleModels[i]);
             current = current.appendNext(next);
         }
@@ -49,10 +49,20 @@ public class DefaultChainFactory {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class StrategyAwardVO {
-        /** 抽奖奖品ID - 内部流转使用 */
+        /**
+         * 抽奖奖品ID - 内部流转使用
+         */
         private Integer awardId;
-        /**  */
+        /**
+         * 抽奖类型；黑名单抽奖、权重规则、默认抽奖
+         */
         private String logicModel;
+
+        /**
+         * 抽奖奖品规则
+         */
+        private String awardRuleValue;
+
     }
 
     @Getter

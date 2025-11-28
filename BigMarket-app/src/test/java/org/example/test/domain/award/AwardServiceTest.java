@@ -2,6 +2,7 @@ package org.example.test.domain.award;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.example.domain.award.model.entity.DistributeAwardEntity;
 import org.example.domain.award.model.entity.UserAwardRecordEntity;
 import org.example.domain.award.model.valobj.AwardStateVO;
 import org.example.domain.award.service.IAwardService;
@@ -48,5 +49,17 @@ public class AwardServiceTest {
 
         new CountDownLatch(1).await();
     }
+
+    @Test
+    public void test_distributeAward() throws InterruptedException {
+        DistributeAwardEntity distributeAwardEntity = new DistributeAwardEntity();
+        distributeAwardEntity.setUserId("xiaofuge");
+        distributeAwardEntity.setOrderId("690124733440");
+        distributeAwardEntity.setAwardId(101);
+        distributeAwardEntity.setAwardConfig("0.01,1"); // 0.01,1 黑名单指定积分值
+
+        awardService.distributeAward(distributeAwardEntity);
+    }
+
 
 }
