@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.domain.activity.model.valobj.OrderTradeTypeVO;
 
 /**
  * @program: BigMarket
@@ -22,4 +23,7 @@ public class SkuRechargeEntity {
     private Long sku;
     /** 幂等业务单号 */
     private String outBusinessNo;
+    /** 订单交易类型 */
+    private OrderTradeTypeVO orderTradeType = OrderTradeTypeVO.rebate_no_pay_trade;
+
 }

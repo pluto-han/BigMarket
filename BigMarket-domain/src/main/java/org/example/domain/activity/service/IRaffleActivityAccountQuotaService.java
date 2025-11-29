@@ -1,9 +1,6 @@
 package org.example.domain.activity.service;
 
-import org.example.domain.activity.model.entity.ActivityAccountEntity;
-import org.example.domain.activity.model.entity.ActivityOrderEntity;
-import org.example.domain.activity.model.entity.ActivityShopCartEntity;
-import org.example.domain.activity.model.entity.SkuRechargeEntity;
+import org.example.domain.activity.model.entity.*;
 
 /**
  * @program: BigMarket
@@ -23,4 +20,11 @@ public interface IRaffleActivityAccountQuotaService {
     ActivityAccountEntity queryActivityAccountEntity(Long activityId, String userId);
 
     Integer queryRaffleActivityAccountPartakeCount(Long activityId, String userId);
+
+    /**
+     * 订单出货 - 积分充值
+     * @param deliveryOrderEntity 出货单实体对象
+     */
+    void updateOrder(DeliveryOrderEntity deliveryOrderEntity);
+
 }

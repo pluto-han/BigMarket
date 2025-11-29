@@ -5,6 +5,7 @@ import org.example.domain.activity.service.IRaffleActivityAccountQuotaService;
 import org.example.domain.credit.model.entity.TradeEntity;
 import org.example.domain.credit.model.valobj.TradeNameVO;
 import org.example.domain.credit.model.valobj.TradeTypeVO;
+import org.example.domain.activity.model.valobj.OrderTradeTypeVO;
 import org.example.domain.credit.service.ICreditAdjustService;
 import org.example.domain.rebate.event.SendRebateMessageEvent;
 import org.example.domain.rebate.model.valobj.RebateTypeVO;
@@ -57,6 +58,7 @@ public class RebateMessageCustomer {
                     skuRechargeEntity.setUserId(rebateMessage.getUserId());
                     skuRechargeEntity.setSku(Long.valueOf(rebateMessage.getRebateConfig()));
                     skuRechargeEntity.setOutBusinessNo(rebateMessage.getBizId());
+                    skuRechargeEntity.setOrderTradeType(OrderTradeTypeVO.rebate_no_pay_trade);
                     raffleActivityAccountQuotaService.createSkuRechargeOrder(skuRechargeEntity);
                     break;
                 case "integral":

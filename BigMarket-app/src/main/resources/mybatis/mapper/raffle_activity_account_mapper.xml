@@ -65,4 +65,5 @@
         set day_count_surplus = #{dayCountSurplus} - 1, update_time = now()
         where user_id = #{userId} and activity_id = #{activityId}
     </update>
+
 </mapper>
