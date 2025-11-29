@@ -27,4 +27,8 @@
                  )
     </insert>
 
+    <select id="queryUserCreditAccount" parameterType="org.example.infrastructure.persistent.po.UserCreditAccount" resultMap="dataMap">
+        select user_id, total_amount, available_amount, account_status from user_credit_account
+        where user_id = #{userId}
+    </select>
 </mapper>
