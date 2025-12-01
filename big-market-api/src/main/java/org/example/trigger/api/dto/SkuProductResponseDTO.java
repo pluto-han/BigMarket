@@ -1,23 +1,16 @@
-package org.example.infrastructure.persistent.po;
+package org.example.trigger.api.dto;
 
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
- * @program: BigMarket
- * @description: 抽奖活动sku持久化对象
  * @author: Hancong Zhang
- * @create: 11/20/25 5:22 PM
- **/
+ * @description: sku商品对象
+ * @create: 12/1/25 10:46 AM
+ */
 @Data
-public class RaffleActivitySku {
-    /**
-     * 自增ID
-     */
-    private Long id;
-
+public class SkuProductResponseDTO {
     /**
      * 商品sku
      */
@@ -38,20 +31,32 @@ public class RaffleActivitySku {
      * 剩余库存
      */
     private Integer stockCountSurplus;
-
     /**
      * 商品金额【积分】
      */
     private BigDecimal productAmount;
 
     /**
-     * 创建时间
+     * 活动商品数量
      */
-    private Date createTime;
+    private ActivityCount activityCount;
 
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
+    @Data
+    public static class ActivityCount {
+        /**
+         * 总次数
+         */
+        private Integer totalCount;
+
+        /**
+         * 日次数
+         */
+        private Integer dayCount;
+
+        /**
+         * 月次数
+         */
+        private Integer monthCount;
+    }
 
 }

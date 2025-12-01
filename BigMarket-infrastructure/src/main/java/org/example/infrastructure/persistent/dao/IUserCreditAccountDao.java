@@ -2,6 +2,7 @@ package org.example.infrastructure.persistent.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.example.infrastructure.persistent.po.UserCreditAccount;
+import cn.bugstack.middleware.db.router.annotation.DBRouter;
 
 /**
  * @author: Hancong Zhang

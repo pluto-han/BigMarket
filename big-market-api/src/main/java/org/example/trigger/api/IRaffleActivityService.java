@@ -1,10 +1,10 @@
 package org.example.trigger.api;
 
-import org.example.trigger.api.dto.ActivityDrawRequestDTO;
-import org.example.trigger.api.dto.ActivityDrawResponseDTO;
-import org.example.trigger.api.dto.UserActivityAccountRequestDTO;
-import org.example.trigger.api.dto.UserActivityAccountResponseDTO;
+import org.example.trigger.api.dto.*;
 import org.example.types.model.Response;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 public interface IRaffleActivityService {
     /**
@@ -36,4 +36,30 @@ public interface IRaffleActivityService {
     Response<Boolean> isCheckInAndRebate(String userId);
 
     Response<UserActivityAccountResponseDTO> queryUserActivityAccount(UserActivityAccountRequestDTO request);
+
+    /**
+     * 查询sku商品集合
+     *
+     * @param activityId 活动ID
+     * @return 商品集合
+     */
+    Response<List<SkuProductResponseDTO>> querySkuProductListByActivityId(Long activityId);
+
+    /**
+     * 查询用户积分值
+     *
+     * @param userId 用户ID
+     * @return 可用积分
+     */
+    Response<BigDecimal> queryUserCreditAccount(String userId);
+
+    /**
+     * 积分支付兑换商品
+     *
+     * @param request 请求对象「用户ID、商品ID」
+     * @return 兑换结果
+     */
+    Response<Boolean> creditPayExchangeSku(SkuProductShopCartRequestDTO request);
+
+    
 }
