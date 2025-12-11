@@ -43,7 +43,7 @@ public abstract class AbstractRaffleActivityAccountQuota extends RaffleActivityA
      * @return
      */
     @Override
-    public UnpaidActivityOrderEntity  createSkuRechargeOrder(SkuRechargeEntity skuRechargeEntity) {
+    public UnpaidActivityOrderEntity createSkuRechargeOrder(SkuRechargeEntity skuRechargeEntity) {
         // 1. Parameter validation
         String userId = skuRechargeEntity.getUserId();
         Long sku = skuRechargeEntity.getSku();

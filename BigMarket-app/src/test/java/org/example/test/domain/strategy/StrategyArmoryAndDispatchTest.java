@@ -57,7 +57,7 @@ public class StrategyArmoryAndDispatchTest {
     @Before
     public void test_strategyArmory(){
 //        boolean success = strategyArmoryAndDispatch.assembleLotteryStrategy(100001L);
-        boolean success = strategyArmoryAndDispatch.assembleLotteryStrategy(100005L);
+        boolean success = strategyArmoryAndDispatch.assembleRaffleStrategy(100005L);
         log.info("Test Result: {}", success);
     }
 

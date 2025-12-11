@@ -73,20 +73,20 @@ public class RaffleActivityController implements IRaffleActivityService {
     @Override
     public Response<Boolean> armory(@RequestParam Long activityId) {
         try {
-            log.info("活动装配，数据预热开始 activityId:{}", activityId);
-            // 1. 活动装配
+            log.info("Assemble activity, data preheating begins.  activityId:{}", activityId);
+            // 1. assemble activity
             activityArmory.assembleActivitySkuByActivityId(activityId);
-            // 2. 策略装配
-            strategyArmory.assembleLotteryStrategyByActivityId(activityId);
+            // 2. assemble strategy
+            strategyArmory.assembleRaffleStrategyByActivityId(activityId);
             Response<Boolean> response = Response.<Boolean>builder()
                     .code(ResponseCode.SUCCESS.getCode())
                     .info(ResponseCode.SUCCESS.getInfo())
                     .data(true)
                     .build();
-            log.info("活动装配，数据预热完成 activityId:{}", activityId);
+            log.info("Assemble activity, data preheating finishes. activityId:{}", activityId);
             return response;
         } catch (Exception e) {
-            log.error("活动装配，数据预热失败 activityId：{}", activityId, e);
+            log.error("Assemble activity, data preheating failed. activityId：{}", activityId, e);
             return Response.<Boolean>builder()
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
@@ -321,7 +321,7 @@ public class RaffleActivityController implements IRaffleActivityService {
 
     @RequestMapping(value = "credit_pay_exchange_sku", method = RequestMethod.POST)
     @Override
-    public Response<Boolean> creditPayExchangeSku(SkuProductShopCartRequestDTO request) {
+    public Response<Boolean> creditPayExchangeSku(@RequestBody SkuProductShopCartRequestDTO request) {
         try {
             log.info("积分兑换商品开始 userId:{} sku:{}", request.getUserId(), request.getSku());
             // 1. 创建兑换商品sku订单，outBusinessNo 每次创建出一个单号。

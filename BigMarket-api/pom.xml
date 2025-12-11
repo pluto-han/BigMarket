@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>big-market-api</artifactId>
+    <artifactId>BigMarket-api</artifactId>
 
     <dependencies>
         <dependency>

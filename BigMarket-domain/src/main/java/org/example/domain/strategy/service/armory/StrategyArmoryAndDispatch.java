@@ -36,45 +36,53 @@ public class StrategyArmoryAndDispatch implements IStrategyArmory, IStrategyDisp
      * @return boolean
      */
     @Override
-    public boolean assembleLotteryStrategy(Long strategyId) {
-        // 1. 查询策略配置（也就是查询策略下的所有奖品）
+    public boolean assembleRaffleStrategy(Long strategyId) {
+        // 1. query all the awards under the strategy
         List<StrategyAwardEntity> strategyAwardEntities = repository.queryStrategyAwardList(strategyId);
 
-        // 2. 缓存奖品库存
+        // 2. cache strategy award count
         for (StrategyAwardEntity strategyAwardEntity : strategyAwardEntities) {
             Integer awardId =  strategyAwardEntity.getAwardId();
             Integer awardCount = strategyAwardEntity.getAwardCount();
             cacheStrategyAwardCount(strategyId, awardId, awardCount);
         }
 
-        // 3.1 默认装配配置 【全量抽奖概率】
-        assembleLotteryStrategy(String.valueOf(strategyId), strategyAwardEntities);
+        // 3.1 assemble full strategy [default config]
+        assembleRaffleStrategy(String.valueOf(strategyId), strategyAwardEntities);
 
-        // 3.2 权重策略配置 - 适用于 rule_weight 权重规则配置
+        // 3.2 assemble weighted strategy [rule_weight config]
         StrategyEntity strategyEntity = repository.queryStrategyEntityByStrategyId(strategyId);
+        // search rule_weight, if null then return
         String ruleWeight = strategyEntity.getRuleWeight();
         if (null == ruleWeight) return true;
 
+        // 3.3 query strategy rule entity
         StrategyRuleEntity strategyRuleEntity = repository.queryStrategyRule(strategyId, ruleWeight);
         if (null == strategyRuleEntity) {
             throw new AppException(ResponseCode.STRATEGY_RULE_WEIGHT_IS_NULL.getCode(), ResponseCode.STRATEGY_RULE_WEIGHT_IS_NULL.getInfo());
         }
+
+        //3.4 fill in rule weight values map
         Map<String, List<Integer>> ruleWeightValueMap = strategyRuleEntity.getRuleWeightValues();
         Set<String> keys = ruleWeightValueMap.keySet();
         for (String key : keys) {
             List<Integer> ruleWeightValues = ruleWeightValueMap.get(key);
+            // clone of strategyAwardEntities
             ArrayList<StrategyAwardEntity> strategyAwardEntitiesClone = new ArrayList<>(strategyAwardEntities);
+            // if awardId is not included in ruleWeightValues, then remove it
             strategyAwardEntitiesClone.removeIf(entity -> !ruleWeightValues.contains(entity.getAwardId()));
-            assembleLotteryStrategy(String.valueOf(strategyId).concat("_").concat(key), strategyAwardEntitiesClone);
+            // assemble weighted strategy
+            assembleRaffleStrategy(String.valueOf(strategyId).concat("_").concat(key), strategyAwardEntitiesClone);
         }
 
         return true;
     }
 
     @Override
-    public boolean assembleLotteryStrategyByActivityId(Long activityId) {
+    public boolean assembleRaffleStrategyByActivityId(Long activityId) {
+        // query strategyId by activityId
         Long strategyId = repository.queryStrategyIdByActivityId(activityId);
-        return assembleLotteryStrategy(strategyId);
+        return assembleRaffleStrategy(strategyId);
     }
 
     /**
@@ -96,7 +104,7 @@ public class StrategyArmoryAndDispatch implements IStrategyArmory, IStrategyDisp
         4. We use [0, 123] as the range of random value. (i.e. There are 100 awards that has probability value of 0.1,
         20 awards that has probability value of 0.02, 3 awards that has probability value of 0.003.)
      */
-    private void assembleLotteryStrategy(String key, List<StrategyAwardEntity> strategyAwardEntities) {
+    private void assembleRaffleStrategy(String key, List<StrategyAwardEntity> strategyAwardEntities) {
         // 1. Get the minimum probability value
         BigDecimal minAwardRate = strategyAwardEntities.stream()
                 .map(StrategyAwardEntity::getAwardRate)
@@ -173,6 +181,12 @@ public class StrategyArmoryAndDispatch implements IStrategyArmory, IStrategyDisp
         return repository.substractionAwardStock(cacheKey);
     }
 
+    /**
+     * chache strategy award count
+     * @param strategyId
+     * @param awardId
+     * @param awardCount
+     */
     private void cacheStrategyAwardCount(Long strategyId, Integer awardId, Integer awardCount) {
         String cacheKey = Constants.RedisKey.STRATEGY_AWARD_COUNT_KEY + strategyId + Constants.UNDERLINE + awardId;
         repository.cacheStrategyAwardCount(cacheKey, awardCount);

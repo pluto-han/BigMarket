@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @program: BigMarket
- * @description:
+ * @description: activity repository implementation
  * @author: Hancong Zhang
  * @create: 11/20/25 6:18 PM
  **/
@@ -71,6 +71,11 @@ public class ActivityRepository implements IActivityRepository {
     private IUserCreditAccountDao userCreditAccountDao;
 
 
+    /**
+     * query activity sku
+     * @param sku
+     * @return
+     */
     @Override
     public ActivitySkuEntity queryActivitySku(Long sku) {
         RaffleActivitySku raffleActivitySku = raffleActivitySkuDao.queryActivitySku(sku);
@@ -89,13 +94,18 @@ public class ActivityRepository implements IActivityRepository {
                 .build();
     }
 
+    /**
+     * put activity into cache when querying
+     * @param activityId
+     * @return
+     */
     @Override
     public ActivityEntity queryRaffleActivityByActivityId(Long activityId) {
-        // 优先从缓存获取
+        // query from cache first
         String cacheKey = Constants.RedisKey.ACTIVITY_KEY + activityId;
         ActivityEntity activityEntity = redisService.getValue(cacheKey);
         if (null != activityEntity) return activityEntity;
-        // 从库中获取数据
+        // cache miss, query from database
         RaffleActivity raffleActivity = raffleActivityDao.queryRaffleActivityByActivityId(activityId);
         activityEntity = ActivityEntity.builder()
                 .activityId(raffleActivity.getActivityId())
@@ -106,17 +116,23 @@ public class ActivityRepository implements IActivityRepository {
                 .strategyId(raffleActivity.getStrategyId())
                 .state(ActivityStateVO.valueOf(raffleActivity.getState()))
                 .build();
+        // put into cache
         redisService.setValue(cacheKey, activityEntity);
         return activityEntity;
     }
 
+    /**
+     * put activity count into cache when querying
+     * @param activityCountId
+     * @return
+     */
     @Override
     public ActivityCountEntity queryRaffleActivityCountByActivityCountId(Long activityCountId) {
-        // 优先从缓存获取
+        // query from cache first
         String cacheKey = Constants.RedisKey.ACTIVITY_COUNT_KEY + activityCountId;
         ActivityCountEntity activityCountEntity = redisService.getValue(cacheKey);
         if (null != activityCountEntity) return activityCountEntity;
-        // 从库中获取数据
+        // cache miss, query from database
         RaffleActivityCount raffleActivityCount = raffleActivityCountDao.queryRaffleActivityCountByActivityCountId(activityCountId);
         activityCountEntity = ActivityCountEntity.builder()
                 .activityCountId(raffleActivityCount.getActivityCountId())
@@ -124,6 +140,7 @@ public class ActivityRepository implements IActivityRepository {
                 .dayCount(raffleActivityCount.getDayCount())
                 .monthCount(raffleActivityCount.getMonthCount())
                 .build();
+        // put into cache
         redisService.setValue(cacheKey, activityCountEntity);
         return activityCountEntity;
     }
@@ -505,6 +522,11 @@ public class ActivityRepository implements IActivityRepository {
                 .build();
     }
 
+    /**
+     * query RaffleActivitySkuList By ActivityId
+     * @param activityId
+     * @return
+     */
     @Override
     public List<ActivitySkuEntity> queryRaffleActivitySkuListByActivityId(Long activityId) {
         List<RaffleActivitySku> raffleActivitySkus = raffleActivitySkuDao.queryActivitySkuListByActivityId(activityId);

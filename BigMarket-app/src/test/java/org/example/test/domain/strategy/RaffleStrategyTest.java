@@ -46,7 +46,7 @@ public class RaffleStrategyTest {
 //        log.info("测试结果：{}", strategyArmory.assembleLotteryStrategy(100001L));
 //        log.info("测试结果：{}", strategyArmory.assembleLotteryStrategy(100002L));
 //        log.info("测试结果：{}", strategyArmory.assembleLotteryStrategy(100003L));
-        log.info("测试结果：{}", strategyArmory.assembleLotteryStrategy(100006L));
+        log.info("测试结果：{}", strategyArmory.assembleRaffleStrategy(100006L));
 
         // 通过反射 mock 规则中的值
         ReflectionTestUtils.setField(ruleWeightLogicChain, "userScore", 4900L);

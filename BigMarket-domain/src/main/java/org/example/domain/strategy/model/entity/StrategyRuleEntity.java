@@ -48,8 +48,8 @@ public class StrategyRuleEntity {
             if (ruleValueGroup == null || ruleValueGroup.isEmpty()) {
                 return resultMap;
             }
-            // split string to get key and value
 
+            // split string to get key and value
             String[] parts = ruleValueGroup.split(Constants.COLON);
             if (parts.length != 2) {
                 throw new IllegalArgumentException("rule_weight rule_rule invalid input format" + ruleValueGroup);

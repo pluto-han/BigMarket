@@ -12,7 +12,7 @@ public interface IStrategyArmory {
      * @param strategyId
      * @return boolean
      */
-    boolean assembleLotteryStrategy(Long strategyId);
+    boolean assembleRaffleStrategy(Long strategyId);
 
-    boolean assembleLotteryStrategyByActivityId(Long activityId);
+    boolean assembleRaffleStrategyByActivityId(Long activityId);
 }

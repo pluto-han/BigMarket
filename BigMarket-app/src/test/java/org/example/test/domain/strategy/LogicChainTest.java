@@ -40,9 +40,9 @@ public class LogicChainTest {
     @Before
     public void setUp() {
         // 策略装配 100001、100002、100003
-        log.info("测试结果：{}", strategyArmory.assembleLotteryStrategy(100001L));
-        log.info("测试结果：{}", strategyArmory.assembleLotteryStrategy(100002L));
-        log.info("测试结果：{}", strategyArmory.assembleLotteryStrategy(100003L));
+        log.info("测试结果：{}", strategyArmory.assembleRaffleStrategy(100001L));
+        log.info("测试结果：{}", strategyArmory.assembleRaffleStrategy(100002L));
+        log.info("测试结果：{}", strategyArmory.assembleRaffleStrategy(100003L));
     }
 
     @Test

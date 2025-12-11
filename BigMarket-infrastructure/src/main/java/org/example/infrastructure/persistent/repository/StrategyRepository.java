@@ -85,7 +85,17 @@ public class StrategyRepository implements IStrategyRepository {
         // StrategyAward is PO, should be changed to Entity
         strategyAwardEntities = new ArrayList<>(strategyAwards.size());
         for (StrategyAward strategyAward : strategyAwards) {
-            StrategyAwardEntity strategyAwardEntity = StrategyAwardEntity.builder().strategyId(strategyAward.getStrategyId()).awardId(strategyAward.getAwardId()).awardTitle(strategyAward.getAwardTitle()).awardSubtitle(strategyAward.getAwardSubtitle()).awardCount(strategyAward.getAwardCount()).awardCountSurplus(strategyAward.getAwardCountSurplus()).awardRate(strategyAward.getAwardRate()).sort(strategyAward.getSort()).ruleModels(strategyAward.getRuleModels()).build();
+            StrategyAwardEntity strategyAwardEntity = StrategyAwardEntity.builder().
+                    strategyId(strategyAward.getStrategyId()).
+                    awardId(strategyAward.getAwardId()).
+                    awardTitle(strategyAward.getAwardTitle()).
+                    awardSubtitle(strategyAward.getAwardSubtitle()).
+                    awardCount(strategyAward.getAwardCount()).
+                    awardCountSurplus(strategyAward.getAwardCountSurplus()).
+                    awardRate(strategyAward.getAwardRate()).
+                    sort(strategyAward.getSort()).
+                    ruleModels(strategyAward.getRuleModels()).
+                    build();
 
             strategyAwardEntities.add(strategyAwardEntity);
         }
@@ -133,6 +143,11 @@ public class StrategyRepository implements IStrategyRepository {
         return redisService.getFromMap(Constants.RedisKey.STRATEGY_RATE_TABLE_KEY + key, rateKey);
     }
 
+    /**
+     * query strategy entity by strategyId
+     * @param strategyId
+     * @return
+     */
     @Override
     public StrategyEntity queryStrategyEntityByStrategyId(Long strategyId) {
         // first, try redis cache
@@ -143,20 +158,35 @@ public class StrategyRepository implements IStrategyRepository {
         }
         // then, try DB
         Strategy strategy = strategyDao.queryStrategyByStrategyId(strategyId);
-        strategyEntity = StrategyEntity.builder().strategyId(strategy.getStrategyId()).strategyDesc(strategy.getStrategyDesc()).ruleModels(strategy.getRuleModels()).build();
+        strategyEntity = StrategyEntity.builder().
+                strategyId(strategy.getStrategyId()).
+                strategyDesc(strategy.getStrategyDesc()).
+                ruleModels(strategy.getRuleModels()).
+                build();
         redisService.setValue(cacheKey, strategyEntity);
         return strategyEntity;
     }
 
+    /**
+     * query strategy rule by strategyId and ruleModel
+     * @param strategyId
+     * @param ruleModel
+     * @return
+     */
     @Override
     public StrategyRuleEntity queryStrategyRule(Long strategyId, String ruleModel) {
         StrategyRule strategyRuleReq = new StrategyRule();
         strategyRuleReq.setStrategyId(strategyId);
         strategyRuleReq.setRuleModel(ruleModel);
         StrategyRule strategyRules = strategyRuleDao.queryStrategyRule(strategyRuleReq);
-        return StrategyRuleEntity.builder().strategyId(strategyRules.getStrategyId()).awardId(strategyRules.getAwardId()).ruleType(strategyRules.getRuleType()).ruleModel(strategyRules.getRuleModel()).ruleValue(strategyRules.getRuleValue()).ruleDesc(strategyRules.getRuleDesc()).build();
-
-
+        return StrategyRuleEntity.builder()
+                .strategyId(strategyRules.getStrategyId())
+                .awardId(strategyRules.getAwardId())
+                .ruleType(strategyRules.getRuleType())
+                .ruleModel(strategyRules.getRuleModel())
+                .ruleValue(strategyRules.getRuleValue())
+                .ruleDesc(strategyRules.getRuleDesc())
+                .build();
     }
 
     @Override
