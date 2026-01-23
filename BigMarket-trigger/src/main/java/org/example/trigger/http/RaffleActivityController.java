@@ -98,10 +98,10 @@ public class RaffleActivityController implements IRaffleActivityService {
     @Override
     public Response<ActivityDrawResponseDTO> draw(@RequestBody ActivityDrawRequestDTO request) {
         try {
-            log.info("活动抽奖 userId:{} activityId:{}", request.getUserId(), request.getActivityId());
-            // 1. 参数校验
+            log.info("Activity raffle begins. userId:{} activityId:{}", request.getUserId(), request.getActivityId());
+            // 1. parameter validation
             if (StringUtils.isBlank(request.getUserId()) || null == request.getActivityId()) {
-                //throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
+                // throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
                 if (StringUtils.isBlank(request.getUserId()) || null == request.getActivityId()) {
                     return Response.<ActivityDrawResponseDTO>builder()
                             .code(ResponseCode.ILLEGAL_PARAMETER.getCode())
@@ -110,18 +110,18 @@ public class RaffleActivityController implements IRaffleActivityService {
                 }
             }
 
-            // 2. 参与活动 - 创建参与记录订单
+            // 2. partake in the activity - create a participation record
             UserRaffleOrderEntity userRaffleOrderEntity = raffleActivityPartakeService.createRaffleOrder(request.getUserId(), request.getActivityId());
-            log.info("活动抽奖， 创建订单 userId:{} activityId:{} orderId:{}", request.getUserId(), request.getActivityId(), userRaffleOrderEntity.getOrderId());
+            log.info("Activity raffle, create order. userId:{} activityId:{} orderId:{}", request.getUserId(), request.getActivityId(), userRaffleOrderEntity.getOrderId());
 
-            // 3. 抽奖策略 - 执行抽奖
+            // 3. raffle strategy - perform raffle
             RaffleAwardEntity raffleAwardEntity = raffleStrategy.performRaffle(RaffleFactorEntity.builder()
                     .userId(request.getUserId())
                     .strategyId(userRaffleOrderEntity.getStrategyId())
                     .endDateTime(userRaffleOrderEntity.getEndDateTime())
                     .build());
 
-            // 4. 存放结果 - 写入中奖记录
+            // 4. restore result - write award record
             UserAwardRecordEntity userAwardRecordEntity = UserAwardRecordEntity.builder()
                     .userId(userRaffleOrderEntity.getUserId())
                     .activityId(userRaffleOrderEntity.getActivityId())
@@ -136,7 +136,7 @@ public class RaffleActivityController implements IRaffleActivityService {
 
             awardService.saveUserAwardRecord(userAwardRecordEntity);
 
-            // 5. 返回结果
+            // 5. return result
             return Response.<ActivityDrawResponseDTO>builder()
                     .code(ResponseCode.SUCCESS.getCode())
                     .info(ResponseCode.SUCCESS.getInfo())

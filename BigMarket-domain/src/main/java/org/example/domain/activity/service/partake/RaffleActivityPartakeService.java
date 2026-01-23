@@ -29,23 +29,31 @@ public class RaffleActivityPartakeService extends AbstractRaffleActivityPartake{
         super(activityRepository);
     }
 
+    /**
+     * filter account and build aggregate object
+     * @param userId
+     * @param activityId
+     * @param currentDate
+     * @return
+     */
     @Override
     protected CreatePartakeOrderAggregate doFilterAccount(String userId, Long activityId, Date currentDate) {
-        // 查询账户总额度
+        // 1. query account total quota
         ActivityAccountEntity activityAccountEntity = activityRepository.queryActivityAccountByUserId(userId, activityId);
 
-        // 额度判断
+        // 2. check total quota
         if (null == activityAccountEntity || activityAccountEntity.getTotalCountSurplus() <=0) {
             throw new AppException(ResponseCode.ACCOUNT_QUOTA_ERROR.getCode(), ResponseCode.ACCOUNT_QUOTA_ERROR.getInfo());
         }
 
-        // 查询月账户额度
+        // 3. query account month quota
         String month = dateFormateMonth.format(currentDate);
         ActivityAccountMonthEntity activityAccountMonthEntity = activityRepository.queryActivityAccountMonthByUserId(userId, activityId, month);
+        // 3.1 check month quota
         if (null != activityAccountMonthEntity && activityAccountMonthEntity.getMonthCountSurplus() <= 0) {
             throw new AppException(ResponseCode.ACCOUNT_MONTH_QUOTA_ERROR.getCode(), ResponseCode.ACCOUNT_MONTH_QUOTA_ERROR.getInfo());
         }
-        // 创建月账户额度
+        // 3.2 if month account is null, create month account quota
         boolean isExistAccountMonth = null != activityAccountMonthEntity;
         if (null == activityAccountMonthEntity) {
             activityAccountMonthEntity = new ActivityAccountMonthEntity();
@@ -56,13 +64,14 @@ public class RaffleActivityPartakeService extends AbstractRaffleActivityPartake{
             activityAccountMonthEntity.setMonthCountSurplus(activityAccountEntity.getMonthCountSurplus());
         }
 
-        // 查询日账户额度
+        // 4. query account day quota
         String day = dateFormateDay.format(currentDate);
         ActivityAccountDayEntity activityAccountDayEntity = activityRepository.queryActivityAccountDayByUserId(userId, activityId, day);
+        // 4.1 create day account quota
         if (null != activityAccountDayEntity && activityAccountDayEntity.getDayCountSurplus() <= 0) {
             throw new AppException(ResponseCode.ACCOUNT_DAY_QUOTA_ERROR.getCode(), ResponseCode.ACCOUNT_DAY_QUOTA_ERROR.getInfo());
         }
-        // 创建日账户额度
+        // 4.2 if day account is null, create day account quota
         boolean isExistAccountDay = null != activityAccountDayEntity;
         if (null == activityAccountDayEntity) {
             activityAccountDayEntity = new ActivityAccountDayEntity();
@@ -73,7 +82,7 @@ public class RaffleActivityPartakeService extends AbstractRaffleActivityPartake{
             activityAccountDayEntity.setDayCountSurplus(activityAccountEntity.getDayCountSurplus());
         }
 
-        // 构建聚合对象
+        // build aggregate object
         CreatePartakeOrderAggregate createPartakeOrderAggregate = new CreatePartakeOrderAggregate();
         createPartakeOrderAggregate.setActivityAccountEntity(activityAccountEntity);
         createPartakeOrderAggregate.setActivityAccountMonthEntity(activityAccountMonthEntity);
@@ -86,6 +95,13 @@ public class RaffleActivityPartakeService extends AbstractRaffleActivityPartake{
         return createPartakeOrderAggregate;
     }
 
+    /**
+     * build order entity
+     * @param userId
+     * @param activityId
+     * @param currentDate
+     * @return
+     */
     @Override
     protected UserRaffleOrderEntity buildUserRaffleOrder(String userId, Long activityId, Date currentDate) {
         ActivityEntity activityEntity = activityRepository.queryRaffleActivityByActivityId(activityId);

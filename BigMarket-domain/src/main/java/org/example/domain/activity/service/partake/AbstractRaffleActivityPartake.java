@@ -35,41 +35,47 @@ public abstract class AbstractRaffleActivityPartake implements IRaffleActivityPa
                 .build());
     }
 
+    /**
+     * create raffle order
+     * @param partakeRaffleActivityEntity
+     * @return
+     */
     @Override
     public UserRaffleOrderEntity createRaffleOrder(PartakeRaffleActivityEntity partakeRaffleActivityEntity) {
-        // 1. 基础信息
+        // 1. basic info
         String userId = partakeRaffleActivityEntity.getUserId();
         Long activityId = partakeRaffleActivityEntity.getActivityId();
         Date currentDate = new Date();
 
-        // 2. 活动查询
+        // 2. query activity
         ActivityEntity activityEntity = activityRepository.queryRaffleActivityByActivityId(activityId);
-        // 2.1 校验活动状态
+        // 2.1 check activity state
         if (!ActivityStateVO.open.equals(activityEntity.getState())) {
             throw new AppException(ResponseCode.ACTIVITY_STATE_ERROR.getCode(), ResponseCode.ACTIVITY_STATE_ERROR.getInfo());
         }
-        // 2.2 校验活动日期
+        // 2.2 check activity date
         if (currentDate.before(activityEntity.getBeginDateTime()) || currentDate.after(activityEntity.getEndDateTime())) {
             throw new AppException(ResponseCode.ACTIVITY_DATE_ERROR.getCode(), ResponseCode.ACTIVITY_DATE_ERROR.getInfo());
         }
 
-        // 3. 查询未被使用的活动参与订单
+        // 3. query unused raffle order.
         UserRaffleOrderEntity userRaffleOrderEntity = activityRepository.queryNoUsedRaffleOrder(partakeRaffleActivityEntity);
         if (null != userRaffleOrderEntity) {
-            log.info("创建参与活动订单【已存在未消费】 userId:{} activityId:{} userRaffleOrderEntity:{}", userId, activityId, userRaffleOrderEntity);
+            // 3.1 If exists, return unused order directly
+            log.info("Create raffle order. [find unused raffle order]  userId:{} activityId:{} userRaffleOrderEntity:{}", userId, activityId, userRaffleOrderEntity);
             return userRaffleOrderEntity;
         }
 
-        // 4. 账户额度过滤,并返回账户构建对象
+        // 4. filter account and build aggregate object
         CreatePartakeOrderAggregate createPartakeOrderAggregate = this.doFilterAccount(userId, activityId, currentDate);
 
-        // 5.构建订单
+        // 5. build order entity
         userRaffleOrderEntity = this.buildUserRaffleOrder(userId, activityId, currentDate);
 
-        // 6.填充抽奖单实体对象
+        // 6. fill in createPartakeOrderAggregate object (with order entity)
         createPartakeOrderAggregate.setUserRaffleOrderEntity(userRaffleOrderEntity);
 
-        // 保存聚合对象 - 事务操作
+        // 7. save aggregate object - transaction operation
         activityRepository.saveCreateRaffleOrderAggregate(createPartakeOrderAggregate);
 
         return userRaffleOrderEntity;

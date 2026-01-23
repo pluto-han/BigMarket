@@ -331,6 +331,10 @@ public class ActivityRepository implements IActivityRepository {
         raffleActivitySkuDao.clearActivitySkuStock(sku);
     }
 
+    /**
+     * save aggregate object - transaction operation
+     * @param createPartakeOrderAggregate
+     */
     @Override
     public void saveCreateRaffleOrderAggregate(CreatePartakeOrderAggregate createPartakeOrderAggregate) {
         try {
@@ -439,6 +443,11 @@ public class ActivityRepository implements IActivityRepository {
 
     }
 
+    /**
+     * query unused raffle order
+     * @param partakeRaffleActivityEntity
+     * @return
+     */
     @Override
     public UserRaffleOrderEntity queryNoUsedRaffleOrder(PartakeRaffleActivityEntity partakeRaffleActivityEntity) {
         // 查询数据
@@ -461,6 +470,12 @@ public class ActivityRepository implements IActivityRepository {
         return userRaffleOrderEntity;
     }
 
+    /**
+     * query account total quota
+     * @param userId
+     * @param activityId
+     * @return
+     */
     @Override
     public ActivityAccountEntity queryActivityAccountByUserId(String userId, Long activityId) {
         // 1. 查询账户
@@ -480,9 +495,15 @@ public class ActivityRepository implements IActivityRepository {
                 .monthCount(raffleActivityAccountRes.getMonthCount())
                 .monthCountSurplus(raffleActivityAccountRes.getMonthCountSurplus())
                 .build();
-
     }
 
+    /**
+     * query account month quota
+     * @param userId
+     * @param activityId
+     * @param month
+     * @return
+     */
     @Override
     public ActivityAccountMonthEntity queryActivityAccountMonthByUserId(String userId, Long activityId, String month) {
         // 1. 查询账户
@@ -503,6 +524,13 @@ public class ActivityRepository implements IActivityRepository {
 
     }
 
+    /**
+     * query account day quota
+     * @param userId
+     * @param activityId
+     * @param day
+     * @return
+     */
     @Override
     public ActivityAccountDayEntity queryActivityAccountDayByUserId(String userId, Long activityId, String day) {
         // 1. 查询账户

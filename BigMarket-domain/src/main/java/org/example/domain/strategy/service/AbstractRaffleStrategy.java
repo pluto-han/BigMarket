@@ -38,9 +38,14 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
         this.strategyRepository = strategyRepository;
     }
 
+    /**
+     * perform raffle and then return award info
+     * @param raffleFactorEntity
+     * @return
+     */
     @Override
     public RaffleAwardEntity performRaffle(RaffleFactorEntity raffleFactorEntity) {
-        // 1. 参数校验
+        // 1. parameter check
         String userId = raffleFactorEntity.getUserId();
         Long strategyId = raffleFactorEntity.getStrategyId();
         if (null == strategyId || StringUtils.isBlank(userId)) {
@@ -48,6 +53,8 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
         }
 
         // 2. 责任链抽奖计算【这步拿到的是初步的抽奖ID，之后需要根据ID处理抽奖】注意；黑名单、权重等非默认抽奖的直接返回抽奖结果
+        // 2. use chain of responsibility to get awardId, and then use decision tree to filter awardId
+        // NB: black_list/rule_weight node will return result directly WITHOUT decision tree filter
         DefaultChainFactory.StrategyAwardVO chainStrategyAwardVO = raffleLogicChain(userId, strategyId);
         log.info("抽奖策略计算-责任链 {} {} {} {}", userId, strategyId, chainStrategyAwardVO.getAwardId(), chainStrategyAwardVO.getLogicModel());
         if (!DefaultChainFactory.LogicModel.RULE_DEFAULT.getCode().equals(chainStrategyAwardVO.getLogicModel())) {
