@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 /**
  * @program: BigMarket
  * @description: 奖品抽奖列表，应答对象
@@ -30,4 +32,6 @@ public class RaffleAwardListResponseDTO {
     private Boolean isAwardUnlock;
     // 等待解锁次数 - 规则的抽奖N次解锁 减去 用户已经抽奖次数
     private Integer waitUnlockCount;
+
+    private BigDecimal awardRate;
 }

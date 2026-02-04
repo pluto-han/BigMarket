@@ -34,7 +34,7 @@ import java.util.Map;
 @RestController()
 @CrossOrigin("${app.config.cross-origin}")
 @RequestMapping("/api/${app.config.api-version}/raffle/strategy/")
-public class IRaffleStrategyController implements IRaffleStrategyService {
+public class RaffleStrategyController implements IRaffleStrategyService {
     @Resource
     private IStrategyArmory strategyArmory;
 
@@ -109,6 +109,7 @@ public class IRaffleStrategyController implements IRaffleStrategyService {
                         .awardRuleLockCount(awardRuleLockCount)
                         .isAwardUnlock(null == awardRuleLockCount || dayCount >= awardRuleLockCount)
                         .waitUnlockCount(null == awardRuleLockCount || awardRuleLockCount <= dayCount ? 0 : (awardRuleLockCount - dayCount))
+                        .awardRate(strategyAward.getAwardRate())
                         .build());
             }
             Response<List<RaffleAwardListResponseDTO>> response = Response.<List<RaffleAwardListResponseDTO>>builder()
