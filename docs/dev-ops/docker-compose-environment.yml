@@ -7,8 +7,8 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      TZ: Asia/Shanghai
-      MYSQL_ROOT_PASSWORD: 123456
+      TZ: Europe/NL
+      MYSQL_ROOT_PASSWORD: password
     networks:
       - my-network
     depends_on:
@@ -16,7 +16,7 @@ services:
     ports:
       - "13306:3306"
     volumes:
-      - ./environment/mysql/sql:/docker-entrypoint-initdb.d
+      - ./mysql/sql:/docker-entrypoint-initdb.d
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       interval: 5s
@@ -43,7 +43,7 @@ services:
     environment:
       - PMA_HOST=mysql
       - PMA_PORT=3306
-      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_ROOT_PASSWORD=password
     depends_on:
       mysql:
         condition: service_healthy
@@ -71,6 +71,7 @@ services:
       retries: 3
 
   # RedisAdmin https://github.com/joeferner/redis-commander
+  # 账密 admin/admin
   redis-admin:
     image: spryker/redis-commander:0.8.0
     container_name: redis-admin
@@ -81,7 +82,7 @@ services:
     environment:
       - REDIS_HOSTS=local:redis:6379
       - HTTP_USER=admin
-      - HTTP_PASSWORD=admin
+      - HTTP_PASSWORD=password
       - LANG=C.UTF-8
       - LANGUAGE=C.UTF-8
       - LC_ALL=C.UTF-8
@@ -92,10 +93,9 @@ services:
         condition: service_healthy
 
   # rabbitmq
-  # 账密 admin/admin
   # rabbitmq-plugins enable rabbitmq_management
   rabbitmq:
-    image: rabbitmq:3.12.9-management
+    image: rabbitmq:3.12.9
     container_name: rabbitmq
     restart: always
     ports:
@@ -103,11 +103,12 @@ services:
       - "15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: admin
-      RABBITMQ_DEFAULT_PASS: admin
+      RABBITMQ_DEFAULT_PASS: password
     command: rabbitmq-server
     volumes:
-      - ./rabbitmq/enabled_plugins:/usr/local/etc/rabbitmq/enabled_plugins
-
+      - ./rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins
+    networks:
+      - my-network
 
 networks:
   my-network:
